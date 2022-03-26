@@ -1,21 +1,26 @@
+#ifndef __ITERATOR_HPP__
+#define __ITERATOR_HPP__
+
 #include <iostream>
 #include <stdexcept>
+#include "RandomAccessIterator.hpp"
 
 namespace ft {
+
 template<class T, class Allocator = std::allocator<T> >
 class vector
-{
+{		
 	public:
-		typedef	T					value_type;
-		typedef std::allocator<T> 	allocator_type;
-		typedef size_t		 		size_type;
-		typedef	std::ptrdiff_t		difference_type;
-		typedef value_type&			reference;
-		typedef const value_type&	const_reference;
-		typedef typename Allocator::pointer	pointer;
-		typedef typename Allocator::const_pointer const_pointer;
-		//typedef 	iterator;
-		//typedef	const_iterator;
+		typedef	T									value_type;
+		typedef std::allocator<T> 					allocator_type;
+		typedef size_t		 						size_type;
+		typedef	std::ptrdiff_t						difference_type;
+		typedef value_type&							reference;
+		typedef const value_type&					const_reference;
+		typedef typename Allocator::pointer			pointer;
+		typedef typename Allocator::const_pointer 	const_pointer;
+		typedef Iterator_v<T*>				iterator;
+		typedef	Iterator_v<const T*>		const_iterator;
 		//typedef	reverse_iterator;
 		//typedef	const_reverse_iterator;
 
@@ -142,10 +147,17 @@ class vector
 		T * data( void ) { return _container; }
 		const T * data( void ) const { return _container; }
 
-		private:
-			T *				_container;
-			size_type		_size;
-			size_type		_capacity;
-			allocator_type	_allocator;
+		iterator	begin( void ) { return (_container); }
+		const_iterator	begin( void ) const { return (_container); }
+		iterator	end( void ) { return (_container + _size); }
+		const_iterator	end( void ) const { return (_container + _size); }
+
+	private:
+		T *				_container;
+		size_type		_size;
+		size_type		_capacity;
+		allocator_type	_allocator;
 };
 }
+
+#endif

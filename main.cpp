@@ -37,6 +37,9 @@ void    cont_data(const int *p, size_t size)
 int     main(void)
 {
     STD ? std::cout << "\e[34mstd\e[31m::container\e[0m\n" : std::cout << "\e[32mft\e[31m::container\e[0m\n";
+
+
+    
     ft::vector<int> arr;
     arr.push_back(63);
     arr.push_back(65);
@@ -47,17 +50,27 @@ int     main(void)
     // std::cout << arr.back() << "\n";
     // std::cout << ">>= " << arr.back() << "\n";
     // arr.pop_back();
-    arr.reserve(15);
-    arr.resize(10);
+    // arr.reserve(15);
+    // arr.resize(10);
     // cont_data(arr.data(), arr.size());
     // arr.clear();
     // cont_data(arr.data(), arr.size());
     ft::vector<int> opt;
+
+    ft::vector<int>::const_iterator it = arr.end();
+    ft::vector<int>::iterator at = arr.begin();
+    it = arr.begin();
+    at = arr.end();
+    // it = at;
+    // at = it; // doesn't work
+
+    std::cout << "iterator_begin = " << (*at) << "\n";
+    
+
     opt = arr;
     opt.assign(3, 4);
     // // arr.swap(opt);
     cont_data(opt.data(), opt.size());
-    // std::cout << ">>= " << arr[0] << "\n";
     // arr.push_back(3);
     // arr.push_back(3);
     // arr.push_back(3);
