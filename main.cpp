@@ -41,11 +41,12 @@ int     main(void)
 
     
     ft::vector<int> arr;
-    arr.push_back(63);
-    arr.push_back(65);
-    arr.push_back(66);
-    arr.push_back(66);
-    arr.push_back(66);
+    arr.push_back(0);
+    arr.push_back(1);
+    arr.push_back(2);
+    arr.push_back(3);
+    arr.push_back(4);
+    arr.push_back(5);
     // arr.reserve(10);
     // std::cout << arr.back() << "\n";
     // std::cout << ">>= " << arr.back() << "\n";
@@ -57,13 +58,22 @@ int     main(void)
     // cont_data(arr.data(), arr.size());
     ft::vector<int> opt;
 
-    ft::vector<int>::const_iterator it = arr.end();
-    ft::vector<int>::iterator at = arr.begin();
+    ft::vector<int>::const_iterator it;
+    ft::vector<int>::iterator at;
+    ft::vector<int>::iterator st;
     it = arr.begin();
-    at = arr.end();
-    // it = at;
+    at = arr.begin();
+    it = at = st;
     // at = it; // doesn't work
-
+    ft::vector<int>::const_iterator tt(it);
+    if ( at == it )
+        std::cout << "at == it\n";
+    at++;
+    if ( at != tt )
+        std::cout << "at != tt\n";
+    if ( at > tt )
+        std::cout << "at > tt\n";
+    at = arr.begin() + 3;
     std::cout << "iterator_begin = " << (*at) << "\n";
     
 

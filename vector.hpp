@@ -9,7 +9,7 @@ namespace ft {
 
 template<class T, class Allocator = std::allocator<T> >
 class vector
-{		
+{
 	public:
 		typedef	T									value_type;
 		typedef std::allocator<T> 					allocator_type;
@@ -19,8 +19,8 @@ class vector
 		typedef const value_type&					const_reference;
 		typedef typename Allocator::pointer			pointer;
 		typedef typename Allocator::const_pointer 	const_pointer;
-		typedef Iterator_v<T*>				iterator;
-		typedef	Iterator_v<const T*>		const_iterator;
+		typedef Iterator_v<T>						iterator;
+		typedef	Iterator_v<const T>					const_iterator;
 		//typedef	reverse_iterator;
 		//typedef	const_reverse_iterator;
 
@@ -147,10 +147,11 @@ class vector
 		T * data( void ) { return _container; }
 		const T * data( void ) const { return _container; }
 
-		iterator	begin( void ) { return (_container); }
-		const_iterator	begin( void ) const { return (_container); }
-		iterator	end( void ) { return (_container + _size); }
-		const_iterator	end( void ) const { return (_container + _size); }
+		iterator	begin( void ) { return (iterator(_container)); }
+		const_iterator	begin( void ) const { return (const_iterator(_container)); }
+
+		iterator	end( void ) { return (iterator(_container + _size)); }
+		const_iterator	end( void ) const { return (const_iterator(_container + _size)); }
 
 	private:
 		T *				_container;
