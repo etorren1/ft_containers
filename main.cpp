@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <deque>
-#if 0 //CREATE A REAL STL EXAMPLE
+#if 1//CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -47,6 +47,11 @@ int     main(void)
     arr.push_back(3);
     arr.push_back(4);
     arr.push_back(5);
+    arr.push_back(6);
+    arr.push_back(7);
+    arr.push_back(8);
+    arr.push_back(9);
+    arr.push_back(874);
     // arr.reserve(10);
     // std::cout << arr.back() << "\n";
     // std::cout << ">>= " << arr.back() << "\n";
@@ -58,33 +63,41 @@ int     main(void)
     // cont_data(arr.data(), arr.size());
     ft::vector<int> opt;
 
-    ft::vector<int>::const_iterator it;
-    ft::vector<int>::iterator at;
-    ft::vector<int>::iterator st;
-    it = arr.begin();
-    at = arr.begin();
-    it = at = st;
-    // at = it; // doesn't work
-    ft::vector<int>::const_iterator tt(it);
-    if ( at == it )
-        std::cout << "at == it\n";
-    at++;
-    if ( at != tt )
-        std::cout << "at != tt\n";
-    if ( at > tt )
-        std::cout << "at > tt\n";
-    at = arr.begin() + 3;
-    std::cout << "iterator_begin = " << (*at) << "\n";
+    // ft::vector<int>::const_iterator it;
+    // ft::vector<int>::iterator at;
+    // ft::vector<int>::iterator st;
+    // ft::vector<int>::reverse_iterator rv;
+    // rv = arr.rbegin();
+    // it = arr.begin();
+    // at = arr.begin();
+    // it = at = st;
+    // // at = it; // doesn't work
+    // ft::vector<int>::const_iterator tt(it);
+    // if ( at == it )
+    //     std::cout << "at == it\n";
+    // at++;
+    // if ( at != tt )
+    //     std::cout << "at != tt\n";
+    // if ( at > tt )
+    //     std::cout << "at > tt\n";
+    // at = arr.begin() + 3;
+    // std::cout << "iterator_begin = " << (*at) << "\n";
     
 
-    opt = arr;
-    opt.assign(3, 4);
-    // // arr.swap(opt);
-    cont_data(opt.data(), opt.size());
+    // opt = arr;
+    // opt.assign(3, 4);
+    // // // arr.swap(opt);
     // arr.push_back(3);
     // arr.push_back(3);
     // arr.push_back(3);
     // arr.reserve(4);
+    // ft::vector<int>::iterator it;
+    // it = opt.begin() + 4;
+    opt.assign(arr.begin(), arr.end());
+    opt.insert(opt.begin(), 4);
+    // opt.reserve(30);
+    // opt.insert(it, 4, 100);
+    cont_data(opt.data(), opt.size());
     std::cout << "\e[33msize = " << opt.size() << "\n";
     std::cout << "\e[33mcapacity = " << opt.capacity() << "\n";
     std::cout << "\e[33mempty = " << opt.empty() << "\n";
