@@ -70,6 +70,7 @@
         "csignal": "cpp",
         "fstream": "cpp",
         "iomanip": "cpp",
-        "__memory": "cpp"
+        "__memory": "cpp",
+        "*.ipp": "cpp"
     }
 }
