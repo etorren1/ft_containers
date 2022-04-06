@@ -71,6 +71,8 @@
         "fstream": "cpp",
         "iomanip": "cpp",
         "__memory": "cpp",
-        "*.ipp": "cpp"
-    }
+        "*.ipp": "cpp",
+        "__functional_base_03": "cpp"
+    },
+    "C_Cpp.dimInactiveRegions": false
 }

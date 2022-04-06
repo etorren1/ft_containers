@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <deque>
-#if 0//CREATE A REAL STL EXAMPLE
+#if 1//CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -10,7 +10,6 @@
 #else
 	// #include "map.hpp"
 	// #include "stack.hpp"
-    #include <vector>
 	#include "vector.hpp"
     #define STD     0
 #endif
@@ -52,7 +51,10 @@ int     main(void)
     arr.push_back(9);
     arr.push_back(874);
 
-
+    ft::vector<int>::iterator it;
+    // it = arr.erase(arr.begin() + 2, arr.end() - 4);
+    it = arr.erase(arr.begin() + 2, arr.end() - 1);
+    std::cout << "it = " << *it << "\n";
     // ft::vector<int> opt(arr.begin(), arr.end());
     ft::vector<int> opt;
     // ft::vector<int>::iterator it = opt.begin();

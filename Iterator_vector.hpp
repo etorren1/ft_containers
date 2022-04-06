@@ -3,13 +3,19 @@
 
 #include "iterators_traits.hpp"
 #include <iostream>
+#include "vector.hpp"
+
+template<typename V, class Allocator> class vector;
 
 namespace ft
 {
+
 template<class T>
 class Iterator_v
 {
+    template<typename V, class Allocator> friend class vector;
     public:
+        typedef T _base;
         typedef typename ft::iterator_traits<T*>::difference_type 	difference_type;
         typedef typename ft::iterator_traits<T*>::value_type		    value_type;
         typedef typename ft::iterator_traits<T*>::pointer			pointer;
@@ -58,17 +64,19 @@ class Iterator_v
 };
 
 template<typename A, typename B>
+std::ptrdiff_t operator-(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return (lhs.getPtr() - rhs.getPtr()); }
+template<typename A, typename B>
 bool operator==(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return lhs.getPtr() == rhs.getPtr(); }
 template<typename A, typename B>
 bool operator!=(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return !(lhs == rhs); }
 template<typename A, typename B>
 bool operator>(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return lhs.getPtr() > rhs.getPtr(); }
 template<typename A, typename B>
-bool operator<(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return !(lhs > rhs); }
+bool operator<(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return lhs.getPtr() < rhs.getPtr(); }
 template<typename A, typename B>
 bool operator>=(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return lhs.getPtr() >= rhs.getPtr(); }
 template<typename A, typename B>
-bool operator<=(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return !(lhs >= rhs); }
+bool operator<=(const Iterator_v<A> & lhs, const Iterator_v<B> & rhs) { return lhs.getPtr() <= rhs.getPtr(); }
 
 template<class T>
 class RevIterator_v
@@ -122,17 +130,19 @@ class RevIterator_v
 };
 
 template<typename A, typename B>
+std::ptrdiff_t operator-(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return (lhs.getPtr() - rhs.getPtr()); }
+template<typename A, typename B>
 bool operator==(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return lhs.getPtr() == rhs.getPtr(); }
 template<typename A, typename B>
 bool operator!=(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return !(lhs == rhs); }
 template<typename A, typename B>
 bool operator>(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return lhs.getPtr() > rhs.getPtr(); }
 template<typename A, typename B>
-bool operator<(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return !(lhs > rhs); }
+bool operator<(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return lhs.getPtr() < rhs.getPtr(); }
 template<typename A, typename B>
 bool operator>=(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return lhs.getPtr() >= rhs.getPtr(); }
 template<typename A, typename B>
-bool operator<=(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return !(lhs >= rhs); }
+bool operator<=(const RevIterator_v<A> & lhs, const RevIterator_v<B> & rhs) { return lhs.getPtr() <= rhs.getPtr(); }
 
 }
 

@@ -112,6 +112,7 @@ int main() {
 
     // vv.push_back();
 
+
     v1.push_back(&(*k2));
     v1.push_back(&(*k3));
     v1.push_back(&(*k4));
@@ -126,6 +127,7 @@ int main() {
         vv.insert(vv.begin(), v1.begin(), v1.end());
     // }
     // catch (...) {
+    //     std::cout << "in catch\n";
     // 	v.push_back(vv.size());
     // 	v.push_back(vv.capacity());
     // }
