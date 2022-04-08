@@ -1,15 +1,15 @@
 #include <iostream>
 #include <string>
 #include <deque>
-#if 1//CREATE A REAL STL EXAMPLE
+#if 0//CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
 	namespace ft = std;
     #define STD     1
 #else
-	// #include "map.hpp"
-	// #include "stack.hpp"
+	#include "map.hpp"
+	#include "stack.hpp"
 	#include "vector.hpp"
     #define STD     0
 #endif
@@ -50,6 +50,20 @@ int     main(void)
     arr.push_back(8);
     arr.push_back(9);
     arr.push_back(874);
+
+    ft::map<std::string, int>
+
+    ft::vector<std::string> str;
+    str.push_back("string");
+    ft::stack<std::string> st;
+
+    ft::stack<int, ft::vector<int> > first(arr);
+    ft::stack<int, ft::vector<int> > second(arr);
+
+    if (second != first)
+        std::cout <<  "1 != 2\n";
+    std::cout << "stack size = " << first.size() << "\n";
+    // ft::stack<int, ft::vector<int> > second;
 
     ft::vector<int>::iterator it;
     // it = arr.erase(arr.begin() + 2, arr.end() - 4);

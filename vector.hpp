@@ -1,12 +1,12 @@
-#ifndef __ITERATOR_HPP__
-#define __ITERATOR_HPP__
+#ifndef __VECTOR_HPP__
+#define __VECTOR_HPP__
 
 #include <iostream>
 #include <stdexcept>
 #include <memory>
-#include "Iterator_vector.hpp"
-#include "enable_if.hpp"
-#include "is_integral.hpp"
+#include "utilites/Iterator_vector.hpp"
+#include "utilites/enable_if.hpp"
+#include "utilites/is_integral.hpp"
 
 namespace ft {
 
@@ -21,7 +21,7 @@ class vector
 		typedef value_type&							reference;
 		typedef const value_type&					const_reference;
 		typedef typename allocator_type::pointer			pointer;
-		typedef typename allocator_type::const_pointer 	const_pointer;
+		typedef typename allocator_type::const_pointer 		const_pointer;
 		typedef Iterator_v<T>						iterator;
 		typedef	Iterator_v<const T>					const_iterator;
 		typedef	RevIterator_v<T>					reverse_iterator;
@@ -227,8 +227,8 @@ class vector
 					_allocator.deallocate(tmp, new_cap);
 					throw;
 				}
-				for (size_type i = 0; i < _size; i++)
-					_allocator.destroy(_container + i);
+				// for (size_type i = 0; i < _size; i++)
+				// 	_allocator.destroy(_container + i);
 				_allocator.deallocate(_container, _capacity);
 				_size += count;
 				_capacity = new_cap;
@@ -279,17 +279,21 @@ class vector
 
 		iterator erase (iterator pos)
 		{
+			// //version 1
 			// size_type index = pos - begin();
 			// _allocator.destroy(_container + index);
 			// for (iterator it = pos, prev = it++; prev != end(); it++, prev++)
 			// 	*prev = *it;
 			// _size--;
 			// return pos;
+
+			// version 2
 			size_type index = pos - begin();
 			if (index < 0 || index >= _size)
 				return pos;
 			for (size_type idx = index ; idx < _size; idx++)
-				_allocator.construct(_container + idx, _container[idx + 1]);
+				_container[idx] = _container[idx + 1];
+				// _allocator.construct(_container + idx, _container[idx + 1]); // construct take 2 times more time
 			_size--;
 			_allocator.destroy(_container + _size);
 			return iterator(_container + index);
@@ -365,7 +369,7 @@ class vector
 		const_reverse_iterator	rend( void ) const { return (const_reverse_iterator(_container - 1)); }
 
 	private:
-		T *				_container;
+		pointer			_container;
 		size_type		_size;
 		size_type		_capacity;
 		allocator_type	_allocator;
