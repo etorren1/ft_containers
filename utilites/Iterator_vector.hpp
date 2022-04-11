@@ -17,7 +17,7 @@ class Iterator_v
     public:
         typedef T _base;
         typedef typename ft::iterator_traits<T*>::difference_type 	difference_type;
-        typedef typename ft::iterator_traits<T*>::value_type		    value_type;
+        typedef typename ft::iterator_traits<T*>::value_type		value_type;
         typedef typename ft::iterator_traits<T*>::pointer			pointer;
         typedef typename ft::iterator_traits<T*>::reference			reference;
         // typedef typename ft::iterator_traits<T*>::iterator_category	iterator_category; 
@@ -30,14 +30,14 @@ class Iterator_v
         virtual ~Iterator_v() {}
 
         // Iterator_v<value_type>& operator=( const Iterator_v<value_type>& It ) { _ptr = It.getPtr(); return *this; }
-        Iterator_v<value_type>& operator=( pointer ptr ) { _ptr = ptr; return *this; }
-        Iterator_v<value_type>& operator+=( const difference_type& move) { _ptr += move; return *this; }
-        Iterator_v<value_type>& operator-=( const difference_type& move) { _ptr -= move; return *this; }
-        Iterator_v<value_type>& operator++( void ) { ++_ptr; return *this; }
-        Iterator_v<value_type>& operator--( void ) { --_ptr; return *this; }
-        Iterator_v<value_type> operator++(int) { pointer tmp = _ptr; ++_ptr; return tmp; }
-        Iterator_v<value_type> operator--(int) { pointer tmp = _ptr; --_ptr; return tmp; }
-        Iterator_v<value_type> operator+( const difference_type& move )
+        Iterator_v<T>& operator=( pointer ptr ) { _ptr = ptr; return *this; }
+        Iterator_v<T>& operator+=( const difference_type& move) { _ptr += move; return *this; }
+        Iterator_v<T>& operator-=( const difference_type& move) { _ptr -= move; return *this; }
+        Iterator_v<T>& operator++( void ) { ++_ptr; return *this; }
+        Iterator_v<T>& operator--( void ) { --_ptr; return *this; }
+        Iterator_v<T> operator++(int) { pointer tmp = _ptr; ++_ptr; return tmp; }
+        Iterator_v<T> operator--(int) { pointer tmp = _ptr; --_ptr; return tmp; }
+        Iterator_v<T> operator+( const difference_type& move )
         {
             pointer old = _ptr;
             _ptr += move;
@@ -45,7 +45,7 @@ class Iterator_v
             _ptr = old;
             return tmp;
         }
-        Iterator_v<value_type> operator-( const difference_type& move )
+        Iterator_v<T> operator-( const difference_type& move )
         {
             pointer old = _ptr;
             _ptr -= move;

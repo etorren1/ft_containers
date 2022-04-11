@@ -15,9 +15,10 @@ struct pair
     pair() { first = NULL, second = NULL; }
 
     pair( const first_type& a, const second_type& b ) { first = a, second = b; }
-    template<class U, class V> 
 
     pair ( const pair<U,V>& pr ) { first = pr.first, second = pr.second; }
+
+    ~pair() {}
 
 };
 

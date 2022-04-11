@@ -51,7 +51,7 @@ int     main(void)
     arr.push_back(9);
     arr.push_back(874);
 
-    ft::map<std::string, int>
+    ft::map<std::string, int> maps;
 
     ft::vector<std::string> str;
     str.push_back("string");
@@ -83,5 +83,12 @@ int     main(void)
     std::cout << "\e[33mcapacity = " << opt.capacity() << "\n";
     std::cout << "\e[33mempty = " << opt.empty() << "\n";
     std::cout << "\e[33mmax_size = " << opt.max_size() << "\n";
+
+    ft::vector<std::string> v1;
+    v1.insert(v1.begin(), 5, "str");
+    ft::vector<std::string> v2;
+    v2.insert(v2.begin(), 5, "str");
+    if (v1 == v2)
+        std::cout << "true\n";
     return (0);
 }
