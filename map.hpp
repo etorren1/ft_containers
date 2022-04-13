@@ -4,6 +4,7 @@
 #include <iostream>
 #include "utilites/pair.hpp"
 #include "utilites/less.hpp"
+#include "RBTree/RBTree.hpp"
 #include <map>
 
 namespace ft {
@@ -28,7 +29,8 @@ class map {
 		typedef std::ptrdiff_t						difference_type;
 		typedef size_t								size_type;
 
-		class map<Key, T, Compare, Allocator>::value_compare : public ft::binary_function<value_type, value_type, bool>
+		// class map<Key, T, Compare, Allocator>::value_compare : public ft::binary_function<value_type, value_type, bool>
+		class value_compare : public ft::binary_function<value_type, value_type, bool>
 		{	 // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
 			friend class map;
 			protected:
@@ -39,7 +41,7 @@ class map {
 				typedef value_type first_argument_type;
 				typedef value_type second_argument_type;
 				bool operator() (const value_type& x, const value_type& y) const { return comp(x.first, y.first); }
-		}
+		};
 
 		//empty (1)	
 		explicit map (const key_compare& compare = key_compare(), const allocator_type& allocator = allocator_type())

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <memory>
+#include <limits>
 #include "utilites/iterator_vector.hpp"
 #include "utilites/lexicographical_compare.hpp"
 #include "utilites/enable_if.hpp"

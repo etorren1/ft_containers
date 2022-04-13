@@ -84,6 +84,16 @@ int     main(void)
     std::cout << "\e[33mempty = " << opt.empty() << "\n";
     std::cout << "\e[33mmax_size = " << opt.max_size() << "\n";
 
+    ft::RBTree<int> Tree;
+
+    Tree.RB_insert(5);
+    Tree.RB_insert(6);
+    Tree.RB_insert(12);
+    Tree.RB_insert(1);
+    Tree.RB_insert(14);
+    Tree.RB_insert(11);
+    Tree.showTree();
+
     ft::vector<std::string> v1;
     v1.insert(v1.begin(), 5, "str");
     ft::vector<std::string> v2;
