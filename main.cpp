@@ -107,6 +107,27 @@ int     main(void)
     Tree.RB_insert(39);
     Tree.RB_insert(47);
 
+    Tree.RB_delete(26);
+    Tree.RB_delete(17);
+    Tree.RB_delete(41);
+    Tree.RB_delete(14);
+    Tree.RB_delete(16);
+    Tree.RB_delete(3);
+    Tree.RB_delete(20);
+    Tree.RB_delete(7);
+    Tree.RB_delete(10);
+    Tree.RB_delete(12);
+    Tree.RB_delete(15);
+    Tree.RB_delete(21);
+    Tree.RB_delete(19);
+    Tree.RB_delete(23);
+    Tree.RB_delete(30);
+    Tree.RB_delete(28);
+    Tree.RB_delete(38);
+    Tree.RB_delete(35);
+    Tree.RB_delete(39);
+    Tree.RB_delete(47);
+
     Tree.showTree();
 
     ft::vector<std::string> v1;

@@ -74,60 +74,89 @@ class RBTree
 			RB_insert_fixup(node);
 		}
 
-		void RB_delete(T key) {
-			
-			Node *node = FoundNode(key);
+		void RB_delete(value_type key) {
+			Node *node = found_node(key);
 			Node *child, *near;
 
-			if (!node || node == NIL) return;
-
-
-			if (node->Left == NIL || node->Right == NIL)
+			if (!node || node == NIL)
+				return;
+			if (node->left == NIL || node->right == NIL)
 				near = node;
 			else 
-				near = Min(node->Right);
-			
-			if (near->Left != NIL)
-				child = near->Left;
+				near = min(node->right);
+			if (near->left != NIL)
+				child = near->left;
 			else
-				child = near->Right;
-
-			child->Parent = near->Parent;
-			if (Parent(near))
-				if (IamLeftOrRight(near) == LEFT)
-					near->Parent->Left = child;
+				child = near->right;
+			child->p = near->p;
+			if (get_parent(near) != NIL) {
+				if (who_i_am(near) == LEFT)
+					near->p->left = child;
 				else
-					near->Parent->Right = child;
+					near->p->right = child;
+			}
 			else
-				this->root = child;
-
-			if (near != node) node->value = near->value; //А если константа? Конст каст?
-
-
-			if (near->colour == Black)
-				FixDelete(child);
-			
-			ClearTerm();
-			std::cout << "Удаление узлов дерева" << std::endl;
-			this->PrintGraph(tumbler);
-			this->PrintInfo();
-			std::this_thread::sleep_for(std::chrono::milliseconds(SPEED));
+				root = child;
+			if (near != node)
+				node->key = near->key;
+			if (near->color == BLACK && child != NIL)
+				RB_delete_fixup(child);
 			delete near;
 		}
 
-		const Node *nil( void ) {
+		Node *found_node(value_type key) {
+			Node *end = root;
+			while (end != NIL) {
+				if (end->key > key)
+					end = end->left;
+				else if (end->key < key)
+					end = end->right;
+				else
+					return (end);
+			}
+			return (NIL);
+		}
+
+		Node *max(Node *ptr) {
+			if (ptr == NIL)
+				return (ptr);
+			Node *tmp = ptr;
+			while (tmp->right != NIL)
+				tmp = tmp->right;
+			return (tmp);
+		}
+
+		Node *min(Node *ptr) {
+			if (ptr == NIL)
+				return (ptr);
+			Node *tmp = ptr;
+			while (tmp->left != NIL)
+				tmp = tmp->left;
+			return (tmp);
+		}
+
+		const Node *get_nil( void ) {
 				return (NIL);
 		}
 
-		const Node *root( void ) {
+		const Node *get_root( void ) {
 				return (this->root);
 		}
 
 		// temp showcase
 		void showTree( void ) {
-			if (root) {
-				std::cout << GREENC << "-------TREE--------\n";
+			if (root != NIL) {
+				std::cout << GREENC << NIL << "-------TREE--------\n";
 				printKey(root, "root");
+			}
+			else
+				std::cout << GREENC << "----TREE_EMPTY-----\n";
+		}
+
+		void showTree(Node *node ) {
+			if (node != NIL) {
+				std::cout << GREENC << NIL << "-------FRAGMENT--------\n";
+				printKey(node, "node");
 			}
 		}
 
@@ -138,14 +167,14 @@ class RBTree
 			if (tmp != NIL) {
 				std::string col;
 				if (tmp->color == RED) {
-					col = "red";
+					col = "RED";
 					std::cout << REDC;
 				}
 				else {
-					col = "black";
+					col = "BLACK";
 					std::cout << BLACKC;
 				}
-				std::cout << str << " = " << tmp->key << " color-" << col;
+				std::cout << tmp << " " << str << " = " << tmp->key << " color-" << col;
 				if (tmp->p != NIL)
 					std::cout << " parrent = " << tmp->p->key;
 				std::cout << RESETC << std::endl;
@@ -200,6 +229,65 @@ class RBTree
 			root->color = BLACK;
 		}
 
+		void RB_delete_fixup(Node *node) {
+			while (node != root && node->color == BLACK) {
+				if (who_i_am(node) == LEFT) {
+					Node *w = node->p->right;
+					if (w->color == RED) {
+						w->color = BLACK;
+						node->p->color = RED;
+						rotate_left(node->p);
+						w = node->p->right;
+					}
+					if (w->left->color == BLACK && w->right->color == BLACK) {
+						w->color = RED;
+						node = node->p;
+					}
+					else {
+						if (w->right->color == BLACK) {
+							w->left->color = BLACK;
+							w->color = RED;
+							rotate_right(w);
+							w = node->p->right;
+						}
+						w->color = node->p->color;
+						node->p->color = BLACK;
+						w->right->color = BLACK;
+						rotate_left(node->p);
+						node = root;
+					}
+				}
+				else {
+					Node *w = node->p->left;
+					if (w->color == RED && w != NIL) {
+						w->color = BLACK;
+						node->p->color = RED;
+						rotate_right(node->p);
+						w = node->p->left;
+					}
+					if (w->right->color == BLACK && w->left->color == BLACK) {
+						w->color = RED;
+						node = node->p;
+					}
+					else {
+						if (w->left->color == BLACK) {
+							w->right->color = BLACK;
+							w->color = RED;
+							rotate_left(w);
+							w = node->p->left;
+						}
+						w->color = node->p->color;
+						node->p->color = BLACK;
+						w->left->color = BLACK;
+						rotate_right(node->p);
+						node = root;
+					}
+				}
+			}
+			node->color = BLACK;
+			root = found_root(node);
+		}
+
 		Node *get_parent(Node *node) {
 			if (node != NIL)
 				return (node->p);
@@ -223,8 +311,6 @@ class RBTree
 		}
 
 		int who_i_am(Node *node) {
-			// std::cout << NIL << "=nil " << node << " && " << node->p\
-			//  << " && " << node->p->left << " && " << node->p->right <<"\n";
 			if (node != NIL && node->p == NIL)
 				return (ROOT);
 			if (node != NIL && node->p != NIL && node->p->left == node)
