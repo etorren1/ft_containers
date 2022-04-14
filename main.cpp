@@ -86,12 +86,27 @@ int     main(void)
 
     ft::RBTree<int> Tree;
 
-    Tree.RB_insert(5);
-    Tree.RB_insert(6);
-    Tree.RB_insert(12);
-    Tree.RB_insert(1);
+    Tree.RB_insert(26);
+    Tree.RB_insert(17);
+    Tree.RB_insert(41);
     Tree.RB_insert(14);
-    Tree.RB_insert(11);
+    Tree.RB_insert(16);
+    Tree.RB_insert(3);
+    Tree.RB_insert(20);
+    Tree.RB_insert(7);
+    Tree.RB_insert(10);
+    Tree.RB_insert(12);
+    Tree.RB_insert(15);
+    Tree.RB_insert(21);
+    Tree.RB_insert(19);
+    Tree.RB_insert(23);
+    Tree.RB_insert(30);
+    Tree.RB_insert(28);
+    Tree.RB_insert(38);
+    Tree.RB_insert(35);
+    Tree.RB_insert(39);
+    Tree.RB_insert(47);
+
     Tree.showTree();
 
     ft::vector<std::string> v1;
