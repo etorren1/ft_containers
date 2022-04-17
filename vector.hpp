@@ -378,50 +378,10 @@ class vector
 		allocator_type	_allocator;
 };
 
-// template <class T>
-// bool operator==(const vector<T>& lhs, const vector<T>& rhs)
-// {
-// 	if (&lhs == &rhs)
-// 		return true;
-// 	if (lhs.size() != rhs.size())
-// 		return false;
-// 	typename ft::vector<T>::const_iterator lit = lhs.begin();
-// 	typename ft::vector<T>::const_iterator rit = rhs.begin();
-// 	for ( ; lit != lhs.end() && rit != rhs.end(); lit++, rit++)
-// 	{
-// 		if (*lit != *rit)
-// 			return false;
-// 	}
-// 	if (lit != lhs.end() || rit != rhs.end())
-// 		return false;
-// 	return true;
-// }
-
 template <class T>
 bool operator==(const vector<T>& lhs, const vector<T>& rhs) { return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()); }
-
 template <class T>
 bool operator!=(const vector<T>& lhs, const vector<T>& rhs) { return !(lhs == rhs); }
-
-// template <class T>
-// bool operator<(const vector<T>& lhs, const vector<T>& rhs)
-// {
-// 	if (&lhs == &rhs)
-// 		return false;
-// 	typename ft::vector<T>::const_iterator lit = lhs.begin();
-// 	typename ft::vector<T>::const_iterator rit = rhs.begin();
-// 	for ( ; lit != lhs.end() && rit != rhs.end(); lit++, rit++)
-// 	{
-// 		if (*lit < *rit)
-// 			return true;
-// 		if (*lit > *rit)
-// 			return false;
-// 	}
-// 	if (lit == lhs.end() && rit != rhs.end())
-// 		return true;
-// 	return false;
-// }
-
 template <class T>
 bool operator<(const vector<T>& lhs, const vector<T>& rhs) { return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
 template <class T>

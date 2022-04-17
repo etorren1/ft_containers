@@ -1,6 +1,10 @@
 #ifndef __RBTREE_HPP__
 #define __RBTREE_HPP__
 
+#include "pair.hpp"
+#include "iterators_traits.hpp"
+#include "iterator_tree.hpp"
+
 namespace ft {
 
 #define RED		0
@@ -18,13 +22,12 @@ namespace ft {
 #define GREENC "\e[0;32m"
 #define BLUEC  "\033[40;34m"
 #define RESETC "\033[0m"
-// #define NIL
 
 template<typename T>
 struct _Node
 {
-	int			color;
-	T				key;
+	int				 color;
+	T				 key;
 	struct _Node*	 p;
 	struct _Node*	 left;
 	struct _Node*	 right;
@@ -35,16 +38,19 @@ class RBTree
 {
 	public:
 		
-		typedef	T		   			value_type;
-		typedef _Node<value_type>	Node;
+		typedef	T		   					value_type;
+		typedef _Node<T>					Node;
+		typedef Iterator_t<value_type>		iterator;
 
 		RBTree( void ) {
 			nil.color = BLACK;
 			nil.p = NIL;
 			nil.left = NIL;
 			nil.right = NIL;
-			nil.key = 0;
+			// nil.key = NULL;
 			root = NIL;
+			// std::cout << "Tree construct\n";
+			// std::cout << root << " " << NIL << "\n";
 		}
 
 		~RBTree( void ) {
@@ -143,6 +149,12 @@ class RBTree
 				return (this->root);
 		}
 
+		iterator begin( void ) {
+			std::cout << "begin\n";
+			std::cout << root->key->first << "\n";
+			return (iterator(root));
+		}
+
 		// temp showcase
 		void showTree( void ) {
 			if (root != NIL) {
@@ -160,6 +172,7 @@ class RBTree
 			}
 		}
 
+
 	private:
 
 		// temp showcase
@@ -174,9 +187,9 @@ class RBTree
 					col = "BLACK";
 					std::cout << BLACKC;
 				}
-				std::cout << tmp << " " << str << " = " << tmp->key << " color-" << col;
-				if (tmp->p != NIL)
-					std::cout << " parrent = " << tmp->p->key;
+				std::cout << tmp << " " << str << " = " << tmp->key->first << "," << tmp->key->second << " color-" << col;
+				// if (tmp->p != NIL)
+				// 	std::cout << " parrent = " << tmp->p->key;
 				std::cout << RESETC << std::endl;
 				printKey(tmp->left, "left");
 				printKey(tmp->right, "right");
@@ -324,11 +337,16 @@ class RBTree
 		{
 			Node * node = new Node();
 
+			std::cout << value->first << "," << value->second << "- node get val \n";
+
 			node->color = RED;
 			node->left = NIL;
 			node->right = NIL;
 			node->p = NIL;
 			node->key = value;
+
+			std::cout << node << "- new node \n";
+			std::cout << node->key->second << "," << node->key->second << "- init value \n";
 			return (node);
 		}
 

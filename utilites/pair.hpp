@@ -12,19 +12,25 @@ struct pair
     first_type first;
     second_type second;
 
-    pair() { first = NULL, second = NULL; }
+    pair() : first(), second() {}
 
-    pair( const first_type& a, const second_type& b ) { first = a, second = b; }
+    pair( const first_type& a, const second_type& b ) : first(a), second(b) {}
 
-    pair ( const pair<U,V>& pr ) { first = pr.first, second = pr.second; }
+    template<class A, class S>
+    pair ( const pair<A,S>& pr ) : first(pr.first), second(pr.second) {}
 
     ~pair() {}
+
+    pair &operator=(const pair &pr) {
+        first = pr.first;
+        second = pr.second;
+        return (*this);
+    }
 
 };
 
 template <class U, class V>
-pair<U, V>
-make_pair(U a, V b)
+pair<U, V> make_pair(U a, V b)
 {
     return pair<U, V>(a, b);
 }

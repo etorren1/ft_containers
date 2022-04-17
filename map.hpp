@@ -9,6 +9,9 @@
 
 namespace ft {
 
+template< class T >
+class RBTree;
+
 template< class Key, class T, class Compare = ft::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
 class map {
 
@@ -22,12 +25,13 @@ class map {
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer	pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		// typedef iter		iterator;
+		typedef std::ptrdiff_t						difference_type;
+		typedef size_t								size_type;
+		typedef RBTree<value_type>						tree_type;
+		typedef typename tree_type::iterator		iterator;
 		// typedef c_iter		const_iterator;
 		// typedef r_iter		reverse_iterator;
 		// typedef c_r_iter		const_reverse_iterator;
-		typedef std::ptrdiff_t						difference_type;
-		typedef size_t								size_type;
 
 		// class map<Key, T, Compare, Allocator>::value_compare : public ft::binary_function<value_type, value_type, bool>
 		class value_compare : public ft::binary_function<value_type, value_type, bool>
@@ -46,7 +50,7 @@ class map {
 		//empty (1)	
 		explicit map (const key_compare& compare = key_compare(), const allocator_type& allocator = allocator_type())
 		{
-			_container = NULL;
+			_pair = NULL;
 			_size = 0;
 			_allocator = allocator;
 			_compare = compare;
@@ -59,8 +63,46 @@ class map {
 		//copy (3)	
 		// map (const map& x) {}
 
+		// mapped_type& operator[] (const key_type& key)
+		// {
+		// 	return _tree.get_value(key);
+			// return (*((this->insert(make_pair(key, mapped_type()))).first)).second;
+		// }
+
+		// single element (1)	
+		// pair<iterator,bool> insert (const value_type& val);
+		void insert (const value_type& value) // must return pair
+		{
+			_pair = _allocator.allocate(1);
+			_allocator.construct(_pair ,value);
+			_tree.RB_insert(_pair);
+			std::cout << _tree.get_root()->key->second << "=second\n";
+			std::cout << "insert - " << (*_pair).first << "\n";
+		}
+
+		void	test(void)
+		{
+			iterator yol = _tree.begin();
+			// std::cout << yol->second << " << yol\n";
+			_tree.showTree();
+			// std::cout << _tree.get_root() << "=" << *yol << "\n";
+			// std::cout << _tree.get_root() << *yol << "\n";
+		}
+
+		iterator begin( void )
+		{
+			return iterator(_tree.begin());
+		}
+
+		// with hint (2)	
+		// iterator insert (iterator position, const value_type& val);
+		// range (3)	
+		// template <class InputIterator>
+		// void insert (InputIterator first, InputIterator last);
+
 	private:
-		pointer				_container;
+		tree_type			_tree;
+		pointer				_pair;
 		size_type			_size;
 		allocator_type		_allocator;
 		key_compare			_compare;

@@ -51,7 +51,30 @@ int     main(void)
     arr.push_back(9);
     arr.push_back(874);
 
-    ft::map<std::string, int> maps;
+    ft::make_pair(5,5);
+    ft::pair<std::string, const int>("aasda", 4);
+    {
+
+        ft::map<int, int> maps;
+        ft::pair<const int,int> pr = ft::make_pair(5,400);
+        maps.insert(pr);
+        maps.insert(ft::make_pair(6,123));
+        maps.insert(ft::make_pair(9,3423));
+        ft::map<int, int>::iterator yol;
+        yol = maps.begin();
+        ft::pair<int, int> par;
+        // par = *yol;
+        std::cout << yol->second << "----------------\n";
+
+        // maps.test();
+        // maps.insert(pr);
+        // std::cout << "map size = " << maps.size() << "\n";
+        // std::cout << maps[5] << "\n";
+        // std::cout << "map size = " << maps.size() << "\n";
+        // std::cout << maps[10] << "\n";
+        // std::cout << "map size = " << maps.size() << "\n";
+        // std::cout << REDC << maps[5] << "\n";
+    }
 
     ft::vector<std::string> str;
     str.push_back("string");
@@ -84,7 +107,7 @@ int     main(void)
     std::cout << "\e[33mempty = " << opt.empty() << "\n";
     std::cout << "\e[33mmax_size = " << opt.max_size() << "\n";
 
-    ft::RBTree<int> Tree;
+    /* ft::RBTree<int> Tree;
 
     Tree.RB_insert(26);
     Tree.RB_insert(17);
@@ -129,6 +152,7 @@ int     main(void)
     Tree.RB_delete(47);
 
     Tree.showTree();
+    */
 
     ft::vector<std::string> v1;
     v1.insert(v1.begin(), 5, "str");
