@@ -33,23 +33,26 @@ struct _Node
 	struct _Node*	 right;
 };
 
-template<typename T, typename U>
+template<typename Pointer, typename Value, class Compare = ft::less<Value> >
 class RBTree
 {
 	public:
 		
-		typedef	T		   					value_type;
-		typedef U							iterator_type;
-		typedef _Node<T>					Node;
+		typedef	Pointer		   				value_type;
+		typedef Value						iterator_type;
+		typedef _Node<value_type>			Node;
+		typedef	Compare						pair_compare;
 		typedef Iterator_t<iterator_type>	iterator;
+		typedef Iterator_t<const iterator_type>	const_iterator;
 
-		RBTree( void ) {
+		RBTree( const Compare& compare ) : _compare(compare) {
 			nil.color = BLACK;
 			nil.p = NIL;
 			nil.left = NIL;
 			nil.right = NIL;
-			// nil.key = NULL;
+			nil.key = NULL;
 			root = NIL;
+			// _compare = compare;
 			// std::cout << "Tree construct\n";
 			// std::cout << root << " " << NIL << "\n";
 		}
@@ -58,7 +61,7 @@ class RBTree
 			delete_node(root);
 		}
 
-		void RB_insert(value_type key) {
+		iterator RB_insert(value_type key) {
 			Node *prev = NIL;
 			Node *curr = root;
 			Node *node = init_node(key);
@@ -66,7 +69,7 @@ class RBTree
 			while (curr != NIL)
 			{
 				prev = curr;
-				if (node->key < curr->key)
+				if (_compare(*node->key, *curr->key))
 					curr = curr->left;
 				else
 					curr = curr->right;
@@ -74,11 +77,12 @@ class RBTree
 			node->p = prev;
 			if (prev == NIL)
 				root = node;
-			else if (node->key < prev->key)
+			else if (_compare(*node->key, *prev->key))
 				prev->left = node;
 			else
 				prev->right = node;
 			RB_insert_fixup(node);
+			return node;
 		}
 
 		void RB_delete(value_type key) {
@@ -139,6 +143,7 @@ class RBTree
 			Node *tmp = ptr;
 			while (tmp->left != NIL)
 				tmp = tmp->left;
+			// std::cout << "min=" << tmp->key->first << "," << tmp->key->second << "\n";
 			return (tmp);
 		}
 
@@ -150,10 +155,22 @@ class RBTree
 				return (this->root);
 		}
 
-		iterator begin( void ) {
-			// std::cout << "begin\n";
-			// std::cout << root->key->first << "\n";
-			return (iterator(root));
+		iterator	end() {
+			return (iterator(NIL));
+		}
+
+		const_iterator	end() const {
+			return (const_iterator(NIL));
+		}
+
+		iterator	begin() {
+			Node *tmp = min(root);
+
+			// std::cout << "min=" << tmp->key->first << "," << tmp->key->second << "\n";
+			return (iterator(min(root)));
+		}
+		const_iterator	begin() const {
+			return (const_iterator(min(root)));
 		}
 
 		// temp showcase
@@ -189,8 +206,8 @@ class RBTree
 					std::cout << BLACKC;
 				}
 				std::cout << tmp << " " << str << " = " << tmp->key->first << "," << tmp->key->second << " color-" << col;
-				// if (tmp->p != NIL)
-				// 	std::cout << " parrent = " << tmp->p->key;
+				if (tmp->p != NIL)
+					std::cout << " parrent = " << tmp->p->key->first << "," << tmp->p->key->second;
 				std::cout << RESETC << std::endl;
 				printKey(tmp->left, "left");
 				printKey(tmp->right, "right");
@@ -338,16 +355,12 @@ class RBTree
 		{
 			Node * node = new Node();
 
-			// std::cout << value->first << "," << value->second << "- node get val \n";
-
 			node->color = RED;
 			node->left = NIL;
 			node->right = NIL;
 			node->p = NIL;
 			node->key = value;
 
-			// std::cout << node << "- new node \n";
-			// std::cout << node->key->first << "," << node->key->second << "- init value \n";
 			return (node);
 		}
 
@@ -416,6 +429,7 @@ class RBTree
 	private:
 		Node   *root;
 		Node   nil;
+		pair_compare	_compare;
 };
 
 } // namespace ft 

@@ -2,12 +2,10 @@
 #define __ITERATOR_T_HPP__
 
 #include "iterators_traits.hpp"
-#include "RBTree.hpp"
+// #include "RBTree.hpp"
 #include "is_integral.hpp"
 
 namespace ft {
-
-#define NIL 	&(this->nil)
 
 template<typename T>
 struct _Node;
@@ -24,22 +22,24 @@ class Iterator_t {
 		// typedef T                           value_type;
 		// typedef T                          *pointer;
 		// typedef T&                          reference; 
-		// typedef std::bidirectional_iterator_tag iterator_category;
+		// typedef std::bidirectioNIL_iterator_tag iterator_category;
 		// typedef _Node<typename ft::remove_const<value_type>::type >* node_pointer;
-		typedef _Node<pointer>										*node_pointer;
+		// typedef _Node<pointer>										Node;
+		typedef _Node<pointer>											*node_pointer;
 		// typedef _Node<value_type>									node_pointer;
 
 	private:
 		node_pointer _node;
 
+
 		node_pointer min(node_pointer node) const {
-			while(node->left != NIL)
+			while(node->left->key != NULL)
 				node = node->left;
 			return node;
 		}
 
 		node_pointer max(node_pointer node) const {
-			while (node->right != NIL)
+			while (node->right->key != NULL)
 				node = node->right;
 			return node;
 		}
@@ -62,9 +62,6 @@ class Iterator_t {
 		}
 
 		reference operator*() const {
-			// value_type tmp;
-			// tmp = _node->key;
-			// return *tmp;
 			return (*_node->key);
 		}
 
@@ -73,12 +70,12 @@ class Iterator_t {
 		}
 
 		Iterator_t& operator++() {
-			if (_node->right != NIL) {
-				_node = min_key(_node->right);
+			if (_node->right->key != NULL) {
+				_node = min(_node->right);
 			}
 			else {
 				node_pointer y = _node->parent;
-				while (y != NULL && _node == y->right) {
+				while (y->key != NULL && _node == y->right) {
 					_node = y;
 					y = y->p;
 				}
@@ -89,14 +86,14 @@ class Iterator_t {
 
 		Iterator_t operator++(int) {
 			Iterator_t<value_type> temp = *this;
-			if (!_node->right->is_nil) {
-				_node = min_key(_node->right);
+			if (_node->right->key != NULL) {
+				_node = min(_node->right);
 			}
 			else {
-				node_pointer y = _node->parent;
-				while (y != NULL && _node == y->right) {
+				node_pointer y = _node->p;
+				while (y->key != NULL && _node == y->right) {
 					_node = y;
-					y = y->parent;
+					y = y->p;
 				}
 				_node = y;
 			}
@@ -104,12 +101,12 @@ class Iterator_t {
 		}
 
 		Iterator_t& operator--() {
-			if (_node->left && !_node->left->is_nil) {
+			if (_node->left->key != NULL) {
 				_node = max(_node->left);
 			}
 			else {
 				node_pointer y = _node->parent;
-				while (y != NULL && _node == y->left) {
+				while (y->key != NULL && _node == y->left) {
 					_node = y;
 					y = y->p;
 				}
@@ -120,12 +117,12 @@ class Iterator_t {
 
 		Iterator_t operator--(int) {
 			Iterator_t<value_type> temp = *this;
-			if (_node->left && !_node->left->is_nil) {
+			if (_node->left->key != NULL) {
 				_node = max(_node->left);
 			}
 			else {
 				node_pointer y = _node->parent;
-				while (y != NULL && _node == y->left) {
+				while (y->key != NULL && _node == y->left) {
 					_node = y;
 					y = y->p;
 				}
@@ -137,6 +134,7 @@ class Iterator_t {
 		node_pointer node() const {
 			return _node;
 		}
+
 	};	
 
 template<typename A, typename B>

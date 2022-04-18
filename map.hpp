@@ -9,8 +9,11 @@
 
 namespace ft {
 
-template< class T, class U >
+template< class T, class U , class Comp>
 class RBTree;
+
+// template< class T, class U >
+// class mapTree;
 
 template< class Key, class T, class Compare = ft::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
 class map {
@@ -27,11 +30,6 @@ class map {
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef std::ptrdiff_t						difference_type;
 		typedef size_t								size_type;
-		typedef RBTree<pointer, value_type>			tree_type;
-		typedef typename tree_type::iterator		iterator;
-		// typedef c_iter		const_iterator;
-		// typedef r_iter		reverse_iterator;
-		// typedef c_r_iter		const_reverse_iterator;
 
 		// class map<Key, T, Compare, Allocator>::value_compare : public ft::binary_function<value_type, value_type, bool>
 		class value_compare : public ft::binary_function<value_type, value_type, bool>
@@ -47,8 +45,15 @@ class map {
 				bool operator() (const value_type& x, const value_type& y) const { return comp(x.first, y.first); }
 		};
 
+		typedef RBTree<pointer, value_type, value_compare>			tree_type;
+		typedef typename tree_type::iterator						iterator;
+		typedef typename tree_type::const_iterator					const_iterator;
+		// typedef c_iter		const_iterator;
+		// typedef r_iter		reverse_iterator;
+		// typedef c_r_iter		const_reverse_iterator;
+
 		//empty (1)	
-		explicit map (const key_compare& compare = key_compare(), const allocator_type& allocator = allocator_type())
+		explicit map (const key_compare& compare = key_compare(), const allocator_type& allocator = allocator_type()) : _tree(compare)
 		{
 			_pair = NULL;
 			_size = 0;
@@ -63,27 +68,33 @@ class map {
 		//copy (3)	
 		// map (const map& x) {}
 
-		// mapped_type& operator[] (const key_type& key)
-		// {
-		// 	return _tree.get_value(key);
-			// return (*((this->insert(make_pair(key, mapped_type()))).first)).second;
-		// }
+		mapped_type& operator[] (const key_type& key)
+		{
+			// return _tree.get_value(key);
+			return (*( (this->insert( make_pair(key, mapped_type()) ) ).first)).second;
+		}
 
 		// single element (1)	
-		// pair<iterator,bool> insert (const value_type& val);
-		void insert (const value_type& value) // must return pair
+		pair<iterator,bool> insert (const value_type& value)
+		// void insert (const value_type& value) // must return pair
 		{
 			_pair = _allocator.allocate(1);
 			_allocator.construct(_pair ,value);
-			_tree.RB_insert(_pair); // <-- take raw value, need allocate mem in tree and copy value
+			// if (_tree.found_node(_pair) == _tree.get_nil())
+			// 	std::cout << "its new value\n";
+			// else
+			// 	std::cout << "its old value\n";
+			iterator it = _tree.RB_insert(_pair);
+			return ft::make_pair(iterator(it),true);
 			// std::cout << _tree.get_root()->key->second << "= second\n";
 			// std::cout << "insert - " << (*_pair).first << "\n";
 		}
 
 		void	test(void)
 		{
-			iterator yol = _tree.begin();
-			std::cout << yol->second << " << yol\n";
+
+			// iterator yol = _tree.begin();
+			// std::cout << yol->second << " << yol\n";
 			_tree.showTree();
 			// std::cout << _tree.get_root() << "=" << *yol << "\n";
 			// std::cout << _tree.get_root() << *yol << "\n";
@@ -108,6 +119,18 @@ class map {
 		key_compare			_compare;
 
 };
+
+// template< class T, class U >
+// class mapTree : public RBTree< T,U > {
+// 	public:
+
+// 		typedef	T		pointer;
+// 		typedef	U		value_type;
+
+// 		void	find_value(value_type& value) {
+			
+// 		}
+// };
 
 }
 

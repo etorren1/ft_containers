@@ -54,19 +54,45 @@ int     main(void)
     ft::make_pair(5,5);
     ft::pair<std::string, const int>("aasda", 4);
     {
-
-        ft::map<int, int> maps;
-        ft::pair<const int,int> pr = ft::make_pair(5,400);
-        maps.insert(pr);
-        maps.insert(ft::make_pair(6,123));
-        maps.insert(ft::make_pair(9,3423));
         ft::map<int, int>::iterator yol;
+        ft::pair<ft::map<int, int>::iterator, bool> its;
+        ft::map<int, int> maps;
+        ft::pair<const int,int> pr = ft::make_pair(5,5);
+        
+        its = maps.insert(pr);
+        // its = maps.insert(pr);
+        // std::cout << "iter = " << its.second << " content:" << its.first->first << "," << its.first->second << "\n";
+        maps.insert(ft::make_pair(6,6));
+        maps.insert(ft::make_pair(34,34));
+        maps.insert(ft::make_pair(79,79));
+        maps.insert(ft::make_pair(123,123));
+        maps.insert(ft::make_pair(777,777));
+        maps.insert(ft::make_pair(1,1));
+        maps.insert(ft::make_pair(12,12));
+        maps.test();
         yol = maps.begin();
         ft::pair<int, int> par;
         par = *yol;
-        std::cout << yol->second << "----------------\n";
+        std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        yol++;
+        std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        yol++;
+        std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        yol++;
+        std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        yol++;
+        std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        yol++;
+        std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        yol++;
+        std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        yol++;
+        std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        yol++;
+        
+        // std::cout << yol->second << "----------------\n";
 
-        maps.test();
+        // maps.test();
         // maps.insert(pr);
         // std::cout << "map size = " << maps.size() << "\n";
         // std::cout << maps[5] << "\n";
@@ -76,89 +102,42 @@ int     main(void)
         // std::cout << REDC << maps[5] << "\n";
     }
 
-    ft::vector<std::string> str;
-    str.push_back("string");
-    ft::stack<std::string> st;
+    // ft::vector<std::string> str;
+    // str.push_back("string");
+    // ft::stack<std::string> st;
 
-    ft::stack<int, ft::vector<int> > first(arr);
-    ft::stack<int, ft::vector<int> > second(arr);
+    // ft::stack<int, ft::vector<int> > first(arr);
+    // ft::stack<int, ft::vector<int> > second(arr);
 
-    if (second != first)
-        std::cout <<  "1 != 2\n";
-    std::cout << "stack size = " << first.size() << "\n";
+    // if (second != first)
+    //     std::cout <<  "1 != 2\n";
+    // std::cout << "stack size = " << first.size() << "\n";
     // ft::stack<int, ft::vector<int> > second;
 
-    ft::vector<int>::iterator it;
+    // ft::vector<int>::iterator it;
     // it = arr.erase(arr.begin() + 2, arr.end() - 4);
-    it = arr.erase(arr.begin() + 2, arr.end() - 1);
-    std::cout << "it = " << *it << "\n";
+    // it = arr.erase(arr.begin() + 2, arr.end() - 1);
+    // std::cout << "it = " << *it << "\n";
     // ft::vector<int> opt(arr.begin(), arr.end());
-    ft::vector<int> opt;
+    // ft::vector<int> opt;
     // ft::vector<int>::iterator it = opt.begin();
     // opt.assign(5, 10);
     // opt.assign(arr.begin(), arr.end());
     // opt.insert(opt.begin(), 4);
     // opt.reserve(30);
     // opt.insert(it, 4, 100);
-    opt.insert(opt.begin(), arr.begin(), arr.end());
-    cont_data(opt.data(), opt.size());
-    std::cout << "\e[33msize = " << opt.size() << "\n";
-    std::cout << "\e[33mcapacity = " << opt.capacity() << "\n";
-    std::cout << "\e[33mempty = " << opt.empty() << "\n";
-    std::cout << "\e[33mmax_size = " << opt.max_size() << "\n";
+    // opt.insert(opt.begin(), arr.begin(), arr.end());
+    // cont_data(opt.data(), opt.size());
+    // std::cout << "\e[33msize = " << opt.size() << "\n";
+    // std::cout << "\e[33mcapacity = " << opt.capacity() << "\n";
+    // std::cout << "\e[33mempty = " << opt.empty() << "\n";
+    // std::cout << "\e[33mmax_size = " << opt.max_size() << "\n";
 
-    /* ft::RBTree<int> Tree;
-
-    Tree.RB_insert(26);
-    Tree.RB_insert(17);
-    Tree.RB_insert(41);
-    Tree.RB_insert(14);
-    Tree.RB_insert(16);
-    Tree.RB_insert(3);
-    Tree.RB_insert(20);
-    Tree.RB_insert(7);
-    Tree.RB_insert(10);
-    Tree.RB_insert(12);
-    Tree.RB_insert(15);
-    Tree.RB_insert(21);
-    Tree.RB_insert(19);
-    Tree.RB_insert(23);
-    Tree.RB_insert(30);
-    Tree.RB_insert(28);
-    Tree.RB_insert(38);
-    Tree.RB_insert(35);
-    Tree.RB_insert(39);
-    Tree.RB_insert(47);
-
-    Tree.RB_delete(26);
-    Tree.RB_delete(17);
-    Tree.RB_delete(41);
-    Tree.RB_delete(14);
-    Tree.RB_delete(16);
-    Tree.RB_delete(3);
-    Tree.RB_delete(20);
-    Tree.RB_delete(7);
-    Tree.RB_delete(10);
-    Tree.RB_delete(12);
-    Tree.RB_delete(15);
-    Tree.RB_delete(21);
-    Tree.RB_delete(19);
-    Tree.RB_delete(23);
-    Tree.RB_delete(30);
-    Tree.RB_delete(28);
-    Tree.RB_delete(38);
-    Tree.RB_delete(35);
-    Tree.RB_delete(39);
-    Tree.RB_delete(47);
-
-    Tree.showTree();
-    */
-
-    ft::vector<std::string> v1;
-    v1.insert(v1.begin(), 5, "str");
-    ft::vector<std::string> v2;
-    v2.insert(v2.begin(), 5, "str");
-    if (v1 == v2)
-        std::cout << "true\n";
+    // ft::vector<std::string> v1;
+    // v1.insert(v1.begin(), 5, "str");
+    // ft::vector<std::string> v2;
+    // v2.insert(v2.begin(), 5, "str");
+    // if (v1 == v2)
+    //     std::cout << "true\n";
     return (0);
 }
