@@ -63,10 +63,10 @@ int     main(void)
         ft::map<int, int>::iterator yol;
         yol = maps.begin();
         ft::pair<int, int> par;
-        // par = *yol;
+        par = *yol;
         std::cout << yol->second << "----------------\n";
 
-        // maps.test();
+        maps.test();
         // maps.insert(pr);
         // std::cout << "map size = " << maps.size() << "\n";
         // std::cout << maps[5] << "\n";

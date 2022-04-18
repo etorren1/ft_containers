@@ -27,7 +27,7 @@ class map {
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef std::ptrdiff_t						difference_type;
 		typedef size_t								size_type;
-		typedef RBTree<value_type>						tree_type;
+		typedef RBTree<value_type>					tree_type;
 		typedef typename tree_type::iterator		iterator;
 		// typedef c_iter		const_iterator;
 		// typedef r_iter		reverse_iterator;
@@ -73,17 +73,17 @@ class map {
 		// pair<iterator,bool> insert (const value_type& val);
 		void insert (const value_type& value) // must return pair
 		{
-			_pair = _allocator.allocate(1);
-			_allocator.construct(_pair ,value);
-			_tree.RB_insert(_pair);
-			std::cout << _tree.get_root()->key->second << "=second\n";
-			std::cout << "insert - " << (*_pair).first << "\n";
+			// _pair = _allocator.allocate(1);
+			// _allocator.construct(_pair ,value);
+			_tree.RB_insert(value); // <-- take raw value, need allocate mem in tree and copy value
+			// std::cout << _tree.get_root()->key->second << "= second\n";
+			// std::cout << "insert - " << (*_pair).first << "\n";
 		}
 
 		void	test(void)
 		{
 			iterator yol = _tree.begin();
-			// std::cout << yol->second << " << yol\n";
+			std::cout << yol->second << " << yol\n";
 			_tree.showTree();
 			// std::cout << _tree.get_root() << "=" << *yol << "\n";
 			// std::cout << _tree.get_root() << *yol << "\n";

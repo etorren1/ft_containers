@@ -24,7 +24,7 @@ class Iterator_v
         typedef	std::random_access_iterator_tag	iterator_category; // for compare std:: with ft::
         typedef pointer iterator_type;
 
-        Iterator_v() { _ptr = nullptr; }
+        Iterator_v() { _ptr = NULL; }
         Iterator_v( pointer ptr ) { _ptr = ptr; }
         Iterator_v( const Iterator_v<value_type>& It ) { _ptr = It.getPtr(); }
         virtual ~Iterator_v() {}
@@ -90,7 +90,7 @@ class RevIterator_v
         typedef	std::random_access_iterator_tag	iterator_category; // for compare std:: with ft::
         typedef pointer iterator_type;
 
-        RevIterator_v() { _ptr = nullptr; }
+        RevIterator_v() { _ptr = NULL; }
         RevIterator_v( pointer ptr ) { _ptr = ptr; }
         RevIterator_v( const RevIterator_v<value_type>& It ) { _ptr = It.getPtr(); }
         virtual ~RevIterator_v() {}

@@ -22,11 +22,11 @@ class Iterator_t {
 		// typedef ft::iterator_traits<T*>::iterator_category iterator_category;
 		// typedef std::ptrdiff_t              difference_type;
 		// typedef T                           value_type;
-		// typedef T                           *pointer;
+		// typedef T                          *pointer;
 		// typedef T&                          reference; 
-		typedef std::bidirectional_iterator_tag iterator_category;
+		// typedef std::bidirectional_iterator_tag iterator_category;
 		// typedef _Node<typename ft::remove_const<value_type>::type >* node_pointer;
-		typedef _Node<value_type>*	node_pointer;
+		typedef _Node<value_type>	*node_pointer;
 		// typedef _Node<value_type>									node_pointer;
 
 	private:
@@ -62,6 +62,9 @@ class Iterator_t {
 		}
 
 		reference operator*() const {
+			// value_type tmp;
+			// tmp = _node->key;
+			// return *tmp;
 			return (*_node->key);
 		}
 

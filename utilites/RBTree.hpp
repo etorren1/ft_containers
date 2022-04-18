@@ -27,7 +27,7 @@ template<typename T>
 struct _Node
 {
 	int				 color;
-	T				 key;
+	T				 *key;
 	struct _Node*	 p;
 	struct _Node*	 left;
 	struct _Node*	 right;
@@ -150,8 +150,8 @@ class RBTree
 		}
 
 		iterator begin( void ) {
-			std::cout << "begin\n";
-			std::cout << root->key->first << "\n";
+			// std::cout << "begin\n";
+			// std::cout << root->key->first << "\n";
 			return (iterator(root));
 		}
 
@@ -337,16 +337,16 @@ class RBTree
 		{
 			Node * node = new Node();
 
-			std::cout << value->first << "," << value->second << "- node get val \n";
+			// std::cout << value->first << "," << value->second << "- node get val \n";
 
 			node->color = RED;
 			node->left = NIL;
 			node->right = NIL;
 			node->p = NIL;
-			node->key = value;
+			node->key = &value;
 
-			std::cout << node << "- new node \n";
-			std::cout << node->key->second << "," << node->key->second << "- init value \n";
+			// std::cout << node << "- new node \n";
+			// std::cout << node->key->first << "," << node->key->second << "- init value \n";
 			return (node);
 		}
 
