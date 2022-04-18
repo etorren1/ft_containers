@@ -26,7 +26,7 @@ class Iterator_t {
 		// typedef T&                          reference; 
 		// typedef std::bidirectional_iterator_tag iterator_category;
 		// typedef _Node<typename ft::remove_const<value_type>::type >* node_pointer;
-		typedef _Node<value_type>	*node_pointer;
+		typedef _Node<pointer>										*node_pointer;
 		// typedef _Node<value_type>									node_pointer;
 
 	private:

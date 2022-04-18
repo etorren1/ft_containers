@@ -27,20 +27,21 @@ template<typename T>
 struct _Node
 {
 	int				 color;
-	T				 *key;
+	T				 key;
 	struct _Node*	 p;
 	struct _Node*	 left;
 	struct _Node*	 right;
 };
 
-template<typename T>
+template<typename T, typename U>
 class RBTree
 {
 	public:
 		
 		typedef	T		   					value_type;
+		typedef U							iterator_type;
 		typedef _Node<T>					Node;
-		typedef Iterator_t<value_type>		iterator;
+		typedef Iterator_t<iterator_type>	iterator;
 
 		RBTree( void ) {
 			nil.color = BLACK;
@@ -343,7 +344,7 @@ class RBTree
 			node->left = NIL;
 			node->right = NIL;
 			node->p = NIL;
-			node->key = &value;
+			node->key = value;
 
 			// std::cout << node << "- new node \n";
 			// std::cout << node->key->first << "," << node->key->second << "- init value \n";
