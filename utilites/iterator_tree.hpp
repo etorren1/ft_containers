@@ -7,6 +7,9 @@
 
 namespace ft {
 
+// template< class T > struct remove_const                { typedef T type; };
+// template< class T > struct remove_const<const T>       { typedef T type; };
+
 template<typename T>
 struct _Node;
 
@@ -26,7 +29,6 @@ class Iterator_t {
 		// typedef _Node<typename ft::remove_const<value_type>::type >* Node*;
 		// typedef _Node<pointer>										Node;
 		typedef _Node<pointer>											Node;
-		// typedef _Node<value_type>									Node*;
 
 	private:
 		Node* _node;
@@ -49,14 +51,20 @@ class Iterator_t {
 
 		Iterator_t(void *node): _node(static_cast<Node*>(node)) {}
 
-		// Iterator_t(const Iterator_t<typename ft::remove_const<value_type>::type > & other)
-		Iterator_t(const Iterator_t<value_type>& other)
+		// Iterator_t(const Iterator_t<value_type>& other)
+		Iterator_t(const Iterator_t<typename ft::remove_const<value_type>::type > & other)
+		// Iterator_t(const Iterator_t<ft::pair<int,int>> & other)
 		{
 			*this = other;
 		}
 
-		// Iterator_t& operator=(const Iterator_t<typename ft::remove_const<value_type>::type>& other) {
-		Iterator_t& operator=(const Iterator_t<value_type>& other) {
+		// Iterator_t& operator=(const Iterator_t<value_type>& other)
+		Iterator_t& operator=(const Iterator_t<typename ft::remove_const<value_type>::type>& other) 
+		// Iterator_t<ft::pair<int,int> >& operator=(const Iterator_t<ft::pair<int,int>> & other)
+		{
+			// std::cout << std::boolalpha;
+			// using type = typename ft::remove_const<const value_type>::type;
+			// std::cout << std::is_same<type, value_type>::value << "<2=\n";
 			_node = other.node();
 			return *this;
 		}

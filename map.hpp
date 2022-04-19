@@ -12,9 +12,6 @@ namespace ft {
 template< class T, class U , class Comp>
 class RBTree;
 
-// template< class T, class U >
-// class mapTree;
-
 template< class Key, class T, class Compare = ft::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
 class map {
 
@@ -48,7 +45,6 @@ class map {
 		typedef RBTree<pointer, value_type, value_compare>			tree_type;
 		typedef typename tree_type::iterator						iterator;
 		typedef typename tree_type::const_iterator					const_iterator;
-		// typedef c_iter		const_iterator;
 		// typedef r_iter		reverse_iterator;
 		// typedef c_r_iter		const_reverse_iterator;
 
@@ -61,16 +57,51 @@ class map {
 		}
 		
 		//range (2)	
-		// template <class InputIterator>
-		// map (InputIterator first, InputIterator last, const key_compare& compare = key_compare(), const allocator_type& allocator = allocator_type()) {}
+		template <class InputIterator>
+		map (InputIterator first, InputIterator last, const key_compare& compare = key_compare(), const allocator_type& allocator = allocator_type()) : _tree(compare)
+		{
+			_compare = compare;
+			_allocator = allocator;
+			// insert(first, last);
+		}
 		
 		//copy (3)	
-		// map (const map& x) {}
+		map (const map& other) : _tree(other._compare)
+		{
+			_allocator = other._allocator;
+			_compare = other._compare;
+			*this = other;
+			// insert(other.begin(), other.end());
+		}
+
+		map& operator=(const map& other)
+		{
+			if (this == &other)
+				return *this;
+			clear();
+			_allocator = other._allocator;
+			_compare = other._compare;
+			iterator it = other.begin();
+
+			// _tree = other._tree;
+			return *this;
+		}
 
 		mapped_type& operator[] (const key_type& key)
 		{
 			// return _tree.get_value(key);
 			return (*( (this->insert( make_pair(key, mapped_type()) ) ).first)).second;
+		}
+
+		void clear( void )
+		{
+			for (iterator it = begin(); it != end(); it++)
+			{
+				_pair = it.node()->key;
+				_allocator.destroy(_pair);
+				_allocator.deallocate(_pair, 1);
+			}
+			_tree.delete_tree();
 		}
 
 		// single element (1)	
@@ -118,8 +149,12 @@ class map {
 		}
 
 		// range (3)	
-		// template <class InputIterator>
-		// void insert (InputIterator first, InputIterator last);
+		template <class InputIterator>
+		void insert (InputIterator first, InputIterator last)
+		{
+			for ( ; first != last; first++)
+				insert(*first);
+		}
 
 		void	test(void) {
 			_tree.showTree();
@@ -129,8 +164,16 @@ class map {
 			return iterator(_tree.begin());
 		}
 
+		const_iterator begin( void ) const {
+			return const_iterator(_tree.begin());
+		}
+
 		iterator end( void ) {
 			return iterator(_tree.end());
+		}
+
+		const_iterator end( void ) const {
+			return const_iterator(_tree.end());
 		}
 
 		bool	empty( void ) {
@@ -176,18 +219,6 @@ class map {
 		key_compare			_compare;
 
 };
-
-// template< class T, class U >
-// class mapTree : public RBTree< T,U > {
-// 	public:
-
-// 		typedef	T		pointer;
-// 		typedef	U		value_type;
-
-// 		void	find_value(value_type& value) {
-			
-// 		}
-// };
 
 }
 

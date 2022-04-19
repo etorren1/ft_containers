@@ -55,7 +55,7 @@ int     main(void)
     ft::pair<std::string, const int>("aasda", 4);
     {
         ft::map<int, int>::iterator yol;
-        ft::map<int, int>::const_iterator cyol;
+        ft::map<int, int>::iterator cyol;
         ft::pair<ft::map<int, int>::iterator, bool> its;
         ft::map<int, int> maps;
         ft::pair<const int,int> pr = ft::make_pair(7,7);
@@ -67,26 +67,31 @@ int     main(void)
         maps.insert(ft::make_pair(79,79));
         maps.insert(ft::make_pair(79,79));
         maps.insert(ft::make_pair(79,79));
-        its = maps.insert(pr);
-        its = maps.insert(pr);
+        // oth.insert(ft::make_pair(33,33));
+        // oth.insert(ft::make_pair(22,22));
+        // oth.insert(ft::make_pair(11,11));
+        // its = maps.insert(pr);
+        // its = maps.insert(pr);
         // std::cout << "iter = " << its.second << " content:" << its.first->first << "," << its.first->second << "\n";
-        maps.test();
-
+        // maps.test();
+        ft::map<int, int> oth;
+        // ft::map<int, int> soth(maps);
+        oth = maps;
+        // std::cout << "find:" << yol->first << "," << yol->second << "\n";
+        // maps.insert(yol, cyol);
+        // maps.clear();
+        std::cout << "size = " << maps.size() << "\n";
         yol = maps.begin();
+        cyol = maps.end();
+
+        // yol = oth.begin();
         while (yol != maps.end())
         {
             std::cout << "content:" << yol->first << "," << yol->second << "\n";
             yol++;
         }
 
-        // std::cout << "map size = " << maps.size() << "\n";
-        // std::cout << "map max_size = " << maps.max_size() << "\n";
-        // std::cout << "count 79 keys = " << maps.count(79) << "\n";
 
-
-        yol = maps.find(6);
-        std::cout << "find:" << yol->first << "," << yol->second << "\n";
-        maps.insert(yol, ft::make_pair(30, 30));
 
         // yol = maps.begin();
         // while (yol != maps.end())

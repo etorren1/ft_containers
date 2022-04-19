@@ -60,7 +60,37 @@ class RBTree
 		}
 
 		~RBTree( void ) {
-			delete_node(_root);
+			delete_tree();
+		}
+
+		RBTree& operator=(const RBTree& other)
+		{
+			if (this == &other)
+				return *this;
+			delete_tree();
+			all_tree();
+			return *this;
+		}
+
+		void	all_tree() const
+		{
+			Node* node = begin().node();
+			while (node != NIL)
+			{
+				if (node != NIL)
+					std::cout << "show tree: " << node->key->first << "," << node->key->second << "\n";
+				if (node->right != NIL) {
+					node = min(node->right);
+				}
+				else {
+					Node* y = node->p;
+					while (y != NIL && node == y->right) {
+						node = y;
+						y = y->p;
+					}
+					node = y;
+				}
+			}
 		}
 
 		iterator RB_insert(iterator pos, value_type key) {
@@ -178,12 +208,21 @@ class RBTree
 			return (tmp);
 		}
 
+		Node *min(Node *ptr) const {
+			if (ptr == NIL)
+				return (ptr);
+			Node *tmp = ptr;
+			while (tmp->left != NIL)
+				tmp = tmp->left;
+			return (tmp);
+		}
+
 		iterator get_nil( void ) {
-				return (NIL);
+				return (iterator(NIL));
 		}
 
 		iterator get_root( void ) {
-				return (this->_root);
+				return (iterator(this->_root));
 		}
 
 		iterator	end() {
@@ -225,6 +264,13 @@ class RBTree
 					return 1;
 			}
 			return 0;
+		}
+
+		void	delete_tree( void )
+		{
+			delete_node(_root);
+			_root = NIL;
+			_nil.p = _root;
 		}
 
 		// temp showcase
@@ -424,6 +470,7 @@ class RBTree
 		void	delete_node(Node *ptr) {
 			if (ptr == NIL)
 				return ;
+			_size--;
 			delete_node(ptr->left);
 			delete_node(ptr->right);
 			delete ptr;
