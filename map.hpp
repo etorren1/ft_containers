@@ -75,19 +75,15 @@ class map {
 		}
 
 		// single element (1)	
-		pair<iterator,bool> insert (const value_type& value)
-		// void insert (const value_type& value) // must return pair
+		pair<iterator, bool> insert (const value_type& value)
 		{
+			iterator it = _tree.found_node(value);
+			if (it != _tree.get_nil())
+				return ft::make_pair(iterator(it),  false);
 			_pair = _allocator.allocate(1);
 			_allocator.construct(_pair ,value);
-			// if (_tree.found_node(_pair) == _tree.get_nil())
-			// 	std::cout << "its new value\n";
-			// else
-			// 	std::cout << "its old value\n";
-			iterator it = _tree.RB_insert(_pair);
-			return ft::make_pair(iterator(it),true);
-			// std::cout << _tree.get_root()->key->second << "= second\n";
-			// std::cout << "insert - " << (*_pair).first << "\n";
+			it = _tree.RB_insert(_pair);
+			return ft::make_pair(iterator(it), true);
 		}
 
 		void	test(void)
@@ -103,6 +99,11 @@ class map {
 		iterator begin( void )
 		{
 			return iterator(_tree.begin());
+		}
+
+		iterator end( void )
+		{
+			return iterator(_tree.end());
 		}
 
 		// with hint (2)	

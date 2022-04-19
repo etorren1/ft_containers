@@ -57,47 +57,34 @@ int     main(void)
         ft::map<int, int>::iterator yol;
         ft::pair<ft::map<int, int>::iterator, bool> its;
         ft::map<int, int> maps;
-        ft::pair<const int,int> pr = ft::make_pair(5,5);
+        ft::pair<const int,int> pr = ft::make_pair(7,7);
         
-        its = maps.insert(pr);
-        // its = maps.insert(pr);
-        // std::cout << "iter = " << its.second << " content:" << its.first->first << "," << its.first->second << "\n";
         maps.insert(ft::make_pair(6,6));
         maps.insert(ft::make_pair(34,34));
         maps.insert(ft::make_pair(79,79));
-        maps.insert(ft::make_pair(123,123));
-        maps.insert(ft::make_pair(777,777));
-        maps.insert(ft::make_pair(1,1));
-        maps.insert(ft::make_pair(12,12));
-        maps.test();
-        yol = maps.begin();
-        ft::pair<int, int> par;
-        par = *yol;
-        std::cout << "content:" << yol->first << "," << yol->second << "\n";
-        yol++;
-        std::cout << "content:" << yol->first << "," << yol->second << "\n";
-        yol++;
-        std::cout << "content:" << yol->first << "," << yol->second << "\n";
-        yol++;
-        std::cout << "content:" << yol->first << "," << yol->second << "\n";
-        yol++;
-        std::cout << "content:" << yol->first << "," << yol->second << "\n";
-        yol++;
-        std::cout << "content:" << yol->first << "," << yol->second << "\n";
-        yol++;
-        std::cout << "content:" << yol->first << "," << yol->second << "\n";
-        yol++;
-        std::cout << "content:" << yol->first << "," << yol->second << "\n";
-        yol++;
+        maps.insert(ft::make_pair(79,79));
+        maps.insert(ft::make_pair(79,79));
+        maps.insert(ft::make_pair(79,79));
+        maps.insert(ft::make_pair(79,79));
+        its = maps.insert(pr);
+        its = maps.insert(pr);
+        std::cout << "iter = " << its.second << " content:" << its.first->first << "," << its.first->second << "\n";
+        // maps.test();
+        yol = maps.end();
         
+        while (yol-- != maps.begin())
+        {
+            std::cout << "content:" << yol->first << "," << yol->second << "\n";
+        }
+
         // std::cout << yol->second << "----------------\n";
 
         // maps.test();
         // maps.insert(pr);
         // std::cout << "map size = " << maps.size() << "\n";
-        // std::cout << maps[5] << "\n";
+        std::cout << maps[6] << "\n";
         // std::cout << "map size = " << maps.size() << "\n";
-        // std::cout << maps[10] << "\n";
+        std::cout << maps[79] << "\n";
         // std::cout << "map size = " << maps.size() << "\n";
         // std::cout << REDC << maps[5] << "\n";
     }

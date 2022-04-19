@@ -18,11 +18,11 @@ class Iterator_t {
 		typedef typename ft::iterator_traits<T*>::pointer			pointer;
 		typedef typename ft::iterator_traits<T*>::difference_type	difference_type;
 		// typedef ft::iterator_traits<T*>::iterator_category iterator_category;
+		typedef std::bidirectional_iterator_tag iterator_category;
 		// typedef std::ptrdiff_t              difference_type;
 		// typedef T                           value_type;
 		// typedef T                          *pointer;
 		// typedef T&                          reference; 
-		// typedef std::bidirectioNIL_iterator_tag iterator_category;
 		// typedef _Node<typename ft::remove_const<value_type>::type >* node_pointer;
 		// typedef _Node<pointer>										Node;
 		typedef _Node<pointer>											*node_pointer;
@@ -74,7 +74,7 @@ class Iterator_t {
 				_node = min(_node->right);
 			}
 			else {
-				node_pointer y = _node->parent;
+				node_pointer y = _node->p;
 				while (y->key != NULL && _node == y->right) {
 					_node = y;
 					y = y->p;
@@ -101,11 +101,18 @@ class Iterator_t {
 		}
 
 		Iterator_t& operator--() {
+			if (_node->key == NULL)
+			{
+
+				std::cout << "It's NIL!\n";
+				_node = max(_node->p);
+			}
+			std::cout << "stadL!\n";
 			if (_node->left->key != NULL) {
 				_node = max(_node->left);
 			}
 			else {
-				node_pointer y = _node->parent;
+				node_pointer y = _node->p;
 				while (y->key != NULL && _node == y->left) {
 					_node = y;
 					y = y->p;
@@ -116,12 +123,19 @@ class Iterator_t {
 		}
 
 		Iterator_t operator--(int) {
+			if (_node->key == NULL)
+			{
+
+				std::cout << "It's NIL!\n";
+				_node = max(_node->p);
+			}
+				std::cout << "stadL!\n";
 			Iterator_t<value_type> temp = *this;
 			if (_node->left->key != NULL) {
 				_node = max(_node->left);
 			}
 			else {
-				node_pointer y = _node->parent;
+				node_pointer y = _node->p;
 				while (y->key != NULL && _node == y->left) {
 					_node = y;
 					y = y->p;

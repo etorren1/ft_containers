@@ -46,12 +46,12 @@ class RBTree
 		typedef Iterator_t<const iterator_type>	const_iterator;
 
 		RBTree( const Compare& compare ) : _compare(compare) {
+			root = NIL;
 			nil.color = BLACK;
-			nil.p = NIL;
+			nil.p = root;
 			nil.left = NIL;
 			nil.right = NIL;
 			nil.key = NULL;
-			root = NIL;
 			// _compare = compare;
 			// std::cout << "Tree construct\n";
 			// std::cout << root << " " << NIL << "\n";
@@ -79,7 +79,7 @@ class RBTree
 				root = node;
 			else if (_compare(*node->key, *prev->key))
 				prev->left = node;
-			else
+			else 
 				prev->right = node;
 			RB_insert_fixup(node);
 			return node;
@@ -115,17 +115,28 @@ class RBTree
 			delete near;
 		}
 
-		Node *found_node(value_type key) {
+		iterator found_node(const iterator_type& key){
 			Node *end = root;
+			// std::cout << "NEW COMPAIR key = " << (*key).first << "\n";
 			while (end != NIL) {
-				if (end->key > key)
+				if (_compare(key, *end->key))
+				{
+					// std::cout << (*end->key).first << " < " <<  (*key).first << "\n";
 					end = end->left;
-				else if (end->key < key)
+				}
+				else if (_compare(*end->key, key))
+				{
+					// std::cout << (*end->key).first << " > " <<  (*key).first << "\n";
 					end = end->right;
+				}
 				else
-					return (end);
+				{
+					// std::cout << "copy found!\n";
+					return (iterator(end));
+				}
 			}
-			return (NIL);
+			// std::cout << "copy not found\n";
+			return (iterator(NIL));
 		}
 
 		Node *max(Node *ptr) {
@@ -143,11 +154,10 @@ class RBTree
 			Node *tmp = ptr;
 			while (tmp->left != NIL)
 				tmp = tmp->left;
-			// std::cout << "min=" << tmp->key->first << "," << tmp->key->second << "\n";
 			return (tmp);
 		}
 
-		const Node *get_nil( void ) {
+		iterator get_nil( void ) {
 				return (NIL);
 		}
 
@@ -164,9 +174,6 @@ class RBTree
 		}
 
 		iterator	begin() {
-			Node *tmp = min(root);
-
-			// std::cout << "min=" << tmp->key->first << "," << tmp->key->second << "\n";
 			return (iterator(min(root)));
 		}
 		const_iterator	begin() const {
