@@ -63,16 +63,18 @@ class RBTree
 			delete_tree();
 		}
 
-		RBTree& operator=(const RBTree& other)
+		RBTree& operator=( RBTree& other)
 		{
 			if (this == &other)
 				return *this;
 			delete_tree();
-			all_tree();
+			iterator pos = get_root();
+			for (iterator it = other.begin(); it != other.end(); it++)
+				pos = RB_insert(pos, it.node()->key);
 			return *this;
 		}
 
-		void	all_tree() const
+		void	all_tree() const /// iterate from begin to end
 		{
 			Node* node = begin().node();
 			while (node != NIL)

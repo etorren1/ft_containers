@@ -66,31 +66,29 @@ class map {
 		}
 		
 		//copy (3)	
-		map (const map& other) : _tree(other._compare)
+		map ( map& other ) : _tree(other._compare)
 		{
 			_allocator = other._allocator;
 			_compare = other._compare;
 			*this = other;
-			// insert(other.begin(), other.end());
+			insert(other.begin(), other.end());
 		}
 
-		map& operator=(const map& other)
+		map& operator=( map& other )
 		{
 			if (this == &other)
 				return *this;
 			clear();
 			_allocator = other._allocator;
 			_compare = other._compare;
-			iterator it = other.begin();
-
-			// _tree = other._tree;
+			insert(other.begin(), other.end());
 			return *this;
 		}
 
 		mapped_type& operator[] (const key_type& key)
 		{
 			// return _tree.get_value(key);
-			return (*( (this->insert( make_pair(key, mapped_type()) ) ).first)).second;
+			return (*( (this->insert( ft::make_pair(key, mapped_type()) ) ).first)).second;
 		}
 
 		void clear( void )
