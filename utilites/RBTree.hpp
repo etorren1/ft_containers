@@ -13,7 +13,7 @@ namespace ft {
 #define LEFT	4
 #define RIGHT	5
 #define NCHILD	6
-#define NIL 	&(this->nil)
+#define NIL 	&(this->_nil)
 
 
 #define BLACKC  "\033[47;30m"
@@ -40,30 +40,32 @@ class RBTree
 		
 		typedef	Pointer		   				value_type;
 		typedef Value						iterator_type;
-		typedef _Node<value_type>			Node;
 		typedef	Compare						pair_compare;
+		typedef	std::size_t					size_type;
+		typedef _Node<value_type>			Node;
 		typedef Iterator_t<iterator_type>	iterator;
 		typedef Iterator_t<const iterator_type>	const_iterator;
 
 		RBTree( const Compare& compare ) : _compare(compare) {
-			root = NIL;
-			nil.color = BLACK;
-			nil.p = root;
-			nil.left = NIL;
-			nil.right = NIL;
-			nil.key = NULL;
+			_root = NIL;
+			_nil.color = BLACK;
+			_nil.p = _root;
+			_nil.left = NIL;
+			_nil.right = NIL;
+			_nil.key = NULL;
+			_size = 0;
 			// _compare = compare;
 			// std::cout << "Tree construct\n";
 			// std::cout << root << " " << NIL << "\n";
 		}
 
 		~RBTree( void ) {
-			delete_node(root);
+			delete_node(_root);
 		}
 
-		iterator RB_insert(value_type key) {
+		iterator RB_insert(iterator pos, value_type key) {
 			Node *prev = NIL;
-			Node *curr = root;
+			Node *curr = pos.node();
 			Node *node = init_node(key);
 
 			while (curr != NIL)
@@ -75,13 +77,16 @@ class RBTree
 					curr = curr->right;
 			}
 			node->p = prev;
-			if (prev == NIL)
-				root = node;
+			if (prev == NIL) {
+				_root = node;
+				_nil.p = _root;
+			}
 			else if (_compare(*node->key, *prev->key))
 				prev->left = node;
 			else 
 				prev->right = node;
 			RB_insert_fixup(node);
+			_size++;
 			return node;
 		}
 
@@ -106,27 +111,30 @@ class RBTree
 				else
 					near->p->right = child;
 			}
-			else
-				root = child;
+			else {
+				_root = child;
+				_nil.p = _root;
+			}
 			if (near != node)
 				node->key = near->key;
 			if (near->color == BLACK && child != NIL)
 				RB_delete_fixup(child);
+			_size--;
 			delete near;
 		}
 
 		iterator found_node(const iterator_type& key){
-			Node *end = root;
-			// std::cout << "NEW COMPAIR key = " << (*key).first << "\n";
+			Node *end = _root;
+			// std::cout << "NEW COMPAIR key = " << key.first << "\n";
 			while (end != NIL) {
 				if (_compare(key, *end->key))
 				{
-					// std::cout << (*end->key).first << " < " <<  (*key).first << "\n";
+					// std::cout << (*end->key).first << " > " <<  key.first << "\n";
 					end = end->left;
 				}
 				else if (_compare(*end->key, key))
 				{
-					// std::cout << (*end->key).first << " > " <<  (*key).first << "\n";
+					// std::cout << (*end->key).first << " < " <<  key.first << "\n";
 					end = end->right;
 				}
 				else
@@ -136,6 +144,19 @@ class RBTree
 				}
 			}
 			// std::cout << "copy not found\n";
+			return (iterator(NIL));
+		}
+
+		iterator found_node(iterator pos, const iterator_type& key){
+			Node *end = pos.node();
+			while (end != NIL) {
+				if (_compare(key, *end->key))
+					end = end->left;
+				else if (_compare(*end->key, key))
+					end = end->right;
+				else
+					return (iterator(end));
+			}
 			return (iterator(NIL));
 		}
 
@@ -161,8 +182,8 @@ class RBTree
 				return (NIL);
 		}
 
-		const Node *get_root( void ) {
-				return (this->root);
+		iterator get_root( void ) {
+				return (this->_root);
 		}
 
 		iterator	end() {
@@ -174,17 +195,43 @@ class RBTree
 		}
 
 		iterator	begin() {
-			return (iterator(min(root)));
+			return (iterator(min(_root)));
 		}
+
 		const_iterator	begin() const {
-			return (const_iterator(min(root)));
+			return (const_iterator(min(_root)));
+		}
+
+		size_type size( void ) const {
+			return _size;
+		}
+
+		bool empty( void ) {
+			return _size == 0;
+		}
+
+		pair_compare value_comp() const {
+			return (_compare);
+		}
+
+		size_type	count( const iterator_type& key) const {
+			Node *end = _root;
+			while (end != NIL) {
+				if (_compare(key, *end->key))
+					end = end->left;
+				else if (_compare(*end->key, key))
+					end = end->right;
+				else
+					return 1;
+			}
+			return 0;
 		}
 
 		// temp showcase
 		void showTree( void ) {
-			if (root != NIL) {
+			if (_root != NIL) {
 				std::cout << GREENC << NIL << "-------TREE--------\n";
-				printKey(root, "root");
+				printKey(_root, "root");
 			}
 			else
 				std::cout << GREENC << "----TREE_EMPTY-----\n";
@@ -227,7 +274,8 @@ class RBTree
 				return ;
 			}
 			while (get_parent(node)->color == RED) {
-				root = found_root(node);
+				_root = found_root(node);
+				_nil.p = _root;
 				if (who_i_am(get_parent(node)) == LEFT) {
 					if (get_uncle(node)->color == RED) {
 						get_parent(node)->color = BLACK;
@@ -263,12 +311,13 @@ class RBTree
 					}
 				}
 			}
-			root = found_root(node);
-			root->color = BLACK;
+			_root = found_root(node);
+			_root->color = BLACK;
+			_nil.p = _root;
 		}
 
 		void RB_delete_fixup(Node *node) {
-			while (node != root && node->color == BLACK) {
+			while (node != _root && node->color == BLACK) {
 				if (who_i_am(node) == LEFT) {
 					Node *w = node->p->right;
 					if (w->color == RED) {
@@ -292,7 +341,7 @@ class RBTree
 						node->p->color = BLACK;
 						w->right->color = BLACK;
 						rotate_left(node->p);
-						node = root;
+						node = _root;
 					}
 				}
 				else {
@@ -318,12 +367,13 @@ class RBTree
 						node->p->color = BLACK;
 						w->left->color = BLACK;
 						rotate_right(node->p);
-						node = root;
+						node = _root;
 					}
 				}
 			}
 			node->color = BLACK;
-			root = found_root(node);
+			_root = found_root(node);
+			_nil.p = _root;
 		}
 
 		Node *get_parent(Node *node) {
@@ -434,8 +484,9 @@ class RBTree
 		}
 
 	private:
-		Node   *root;
-		Node   nil;
+		Node   			*_root;
+		Node   			_nil;
+		size_type		_size;
 		pair_compare	_compare;
 };
 

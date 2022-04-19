@@ -56,7 +56,6 @@ class map {
 		explicit map (const key_compare& compare = key_compare(), const allocator_type& allocator = allocator_type()) : _tree(compare)
 		{
 			_pair = NULL;
-			_size = 0;
 			_allocator = allocator;
 			_compare = compare;
 		}
@@ -79,43 +78,100 @@ class map {
 		{
 			iterator it = _tree.found_node(value);
 			if (it != _tree.get_nil())
-				return ft::make_pair(iterator(it),  false);
+				return ft::make_pair(iterator(it), false);
 			_pair = _allocator.allocate(1);
 			_allocator.construct(_pair ,value);
-			it = _tree.RB_insert(_pair);
+			it = _tree.RB_insert(_tree.get_root(), _pair);
 			return ft::make_pair(iterator(it), true);
 		}
 
-		void	test(void)
-		{
+		// with hint (2) <- slower?
+		// iterator insert (iterator position, const value_type& value)
+		// {
+		// 	position = _tree.found_node(value);
+		// 	if (position != _tree.get_nil())
+		// 		return position;
+		// 	_pair = _allocator.allocate(1);
+		// 	_allocator.construct(_pair ,value);
+		// 	position = _tree.RB_insert(_tree.get_root(), _pair);
+		// 	return position;
+		// }
 
-			// iterator yol = _tree.begin();
-			// std::cout << yol->second << " << yol\n";
-			_tree.showTree();
-			// std::cout << _tree.get_root() << "=" << *yol << "\n";
-			// std::cout << _tree.get_root() << *yol << "\n";
+		// with hint (2) <- faster?
+		iterator insert (iterator position, const value_type& value)
+		{
+			if (_compare(position->first, _pair->first))
+			{
+				iterator it = _tree.found_node(position, value);
+				if (it != _tree.get_nil())
+					return it;
+				_pair = _allocator.allocate(1);
+				_allocator.construct(_pair ,value);
+				position = _tree.RB_insert(position, _pair);
+			}
+			else {
+				ft::pair<ft::map<Key, T, Compare, Allocator>::iterator, bool> its;
+				its = insert(value);
+				position = its.first;
+			}
+			return position;
 		}
 
-		iterator begin( void )
-		{
-			return iterator(_tree.begin());
-		}
-
-		iterator end( void )
-		{
-			return iterator(_tree.end());
-		}
-
-		// with hint (2)	
-		// iterator insert (iterator position, const value_type& val);
 		// range (3)	
 		// template <class InputIterator>
 		// void insert (InputIterator first, InputIterator last);
 
+		void	test(void) {
+			_tree.showTree();
+		}
+
+		iterator begin( void ) {
+			return iterator(_tree.begin());
+		}
+
+		iterator end( void ) {
+			return iterator(_tree.end());
+		}
+
+		bool	empty( void ) {
+			return _tree.empty();
+		}
+
+		iterator find (const key_type& k) {
+			return _tree.found_node(ft::make_pair(k, mapped_type()));
+		}
+
+		const_iterator find (const key_type& k) const {
+			return _tree.found_node(ft::make_pair(k, mapped_type()));
+		}
+
+		size_type count (const key_type& k) const {
+			return _tree.count(ft::make_pair(k, mapped_type()));
+		}
+
+		size_type size( void ) const {
+			return _tree.size();
+		}
+
+		size_type max_size( void ) const {
+			return _allocator.max_size();
+		}
+
+		key_compare key_comp( void ) const {
+			return key_compare();
+		}
+
+		value_compare value_comp( void ) const {
+			return _tree.value_comp();
+		}
+
+		allocator_type get_allocator( void ) const {
+			return _allocator;
+		}
+
 	private:
 		tree_type			_tree;
 		pointer				_pair;
-		size_type			_size;
 		allocator_type		_allocator;
 		key_compare			_compare;
 

@@ -23,22 +23,22 @@ class Iterator_t {
 		// typedef T                           value_type;
 		// typedef T                          *pointer;
 		// typedef T&                          reference; 
-		// typedef _Node<typename ft::remove_const<value_type>::type >* node_pointer;
+		// typedef _Node<typename ft::remove_const<value_type>::type >* Node*;
 		// typedef _Node<pointer>										Node;
-		typedef _Node<pointer>											*node_pointer;
-		// typedef _Node<value_type>									node_pointer;
+		typedef _Node<pointer>											Node;
+		// typedef _Node<value_type>									Node*;
 
 	private:
-		node_pointer _node;
+		Node* _node;
 
 
-		node_pointer min(node_pointer node) const {
+		Node* min(Node* node) const {
 			while(node->left->key != NULL)
 				node = node->left;
 			return node;
 		}
 
-		node_pointer max(node_pointer node) const {
+		Node* max(Node* node) const {
 			while (node->right->key != NULL)
 				node = node->right;
 			return node;
@@ -47,7 +47,7 @@ class Iterator_t {
 	public:
 		Iterator_t() {}
 
-		Iterator_t(void *node): _node(static_cast<node_pointer>(node)) {}
+		Iterator_t(void *node): _node(static_cast<Node*>(node)) {}
 
 		// Iterator_t(const Iterator_t<typename ft::remove_const<value_type>::type > & other)
 		Iterator_t(const Iterator_t<value_type>& other)
@@ -74,7 +74,7 @@ class Iterator_t {
 				_node = min(_node->right);
 			}
 			else {
-				node_pointer y = _node->p;
+				Node* y = _node->p;
 				while (y->key != NULL && _node == y->right) {
 					_node = y;
 					y = y->p;
@@ -90,7 +90,7 @@ class Iterator_t {
 				_node = min(_node->right);
 			}
 			else {
-				node_pointer y = _node->p;
+				Node* y = _node->p;
 				while (y->key != NULL && _node == y->right) {
 					_node = y;
 					y = y->p;
@@ -103,16 +103,14 @@ class Iterator_t {
 		Iterator_t& operator--() {
 			if (_node->key == NULL)
 			{
-
-				std::cout << "It's NIL!\n";
 				_node = max(_node->p);
+				return *this;
 			}
-			std::cout << "stadL!\n";
 			if (_node->left->key != NULL) {
 				_node = max(_node->left);
 			}
 			else {
-				node_pointer y = _node->p;
+				Node* y = _node->p;
 				while (y->key != NULL && _node == y->left) {
 					_node = y;
 					y = y->p;
@@ -123,19 +121,17 @@ class Iterator_t {
 		}
 
 		Iterator_t operator--(int) {
+			Iterator_t<value_type> temp = *this;
 			if (_node->key == NULL)
 			{
-
-				std::cout << "It's NIL!\n";
 				_node = max(_node->p);
+				return temp;
 			}
-				std::cout << "stadL!\n";
-			Iterator_t<value_type> temp = *this;
 			if (_node->left->key != NULL) {
 				_node = max(_node->left);
 			}
 			else {
-				node_pointer y = _node->p;
+				Node* y = _node->p;
 				while (y->key != NULL && _node == y->left) {
 					_node = y;
 					y = y->p;
@@ -145,7 +141,7 @@ class Iterator_t {
 			return temp;
 		}
 
-		node_pointer node() const {
+		Node* node() const {
 			return _node;
 		}
 
