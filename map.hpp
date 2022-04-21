@@ -154,9 +154,6 @@ class map {
 				insert(*first);
 		}
 
-		void	test(void) {
-			_tree.showTree();
-		}
 
 		iterator begin( void ) {
 			return iterator(_tree.begin());
@@ -206,10 +203,37 @@ class map {
 			return _tree.value_comp();
 		}
 
+		iterator lower_bound(const key_type& k) {
+			return (_tree.lower_bound(ft::make_pair(k, mapped_type())));
+		}
+
+		const_iterator lower_bound(const key_type& k) const {
+			return (_tree.lower_bound(ft::make_pair(k, mapped_type())));
+		}
+
+		iterator upper_bound(const key_type& k) {
+			return (_tree.upper_bound(ft::make_pair(k, mapped_type())));
+		}
+
+		const_iterator upper_bound(const key_type& k) const {
+			return (_tree.upper_bound(ft::make_pair(k, mapped_type())));
+		}
+
+		ft::pair<iterator, iterator> equal_range(const key_type & k) {
+			return (_tree.equal_range(ft::make_pair(k, mapped_type())));
+		}	
+
+		ft::pair<const_iterator, const_iterator> equal_range(const key_type & k) const {
+			return (_tree.equal_range(ft::make_pair(k, mapped_type())));
+		}	
+
 		allocator_type get_allocator( void ) const {
 			return _allocator;
 		}
 
+		void	test(void) { // test
+			_tree.showTree();
+		}
 	private:
 		tree_type			_tree;
 		pointer				_pair;

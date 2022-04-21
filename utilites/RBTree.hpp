@@ -275,6 +275,50 @@ class RBTree
 			_nil.p = _root;
 		}
 
+		iterator lower_bound(const value_type& value){
+			iterator last = end();
+			for (iterator first = begin(); first != last; ++first){
+				if(!_compare(*first, value))
+					return (first);
+			}
+			return (last);
+		}
+
+		const_iterator lower_bound(const value_type& value) const{
+			const_iterator last = end();
+			for (const_iterator first = begin(); first != last; ++first){
+				if(!_compare(*first, value))
+					return (first);
+			}
+			return (last);
+		}
+
+		iterator upper_bound(const value_type& value){
+			iterator last = end();
+			for (iterator first = begin(); first != last; ++first){
+				if(_compare(value, *first))
+					return (first);
+			}
+			return (last);
+		}
+
+		const_iterator upper_bound(const value_type& value) const{
+			const_iterator last = end();
+			for (const_iterator first = begin(); first != last; ++first){
+				if(_compare(value, *first))
+					return (first);
+			}
+			return (last);
+		}
+
+		ft::pair<iterator, iterator> equal_range(const value_type &value) {
+			return (ft::make_pair(lower_bound(value), upper_bound(value)));
+		}
+
+		ft::pair<const_iterator, const_iterator> equal_range(const value_type &value) const {
+			return (ft::make_pair(lower_bound(value), upper_bound(value)));
+		}
+
 		// temp showcase
 		void showTree( void ) {
 			if (_root != NIL) {

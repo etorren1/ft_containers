@@ -326,14 +326,17 @@ class vector
 			size_type tmp_size = _size;
 			size_type tmp_capasity = _capacity;
 			pointer	tmp_container = _container;
+			allocator_type tmp_allocator = _allocator;
 
 			_size = x._size;
 			_capacity = x._capacity;
 			_container = x._container;
+			_allocator = x._allocator;
 
 			x._size = tmp_size;
 			x._capacity = tmp_capasity;
 			x._container = tmp_container;
+			x._allocator = tmp_allocator;
 		}
 
 		allocator_type get_allocator() const { return _allocator; }
