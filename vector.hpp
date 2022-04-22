@@ -386,7 +386,7 @@ bool operator==(const vector<T>& lhs, const vector<T>& rhs) { return lhs.size() 
 template <class T>
 bool operator!=(const vector<T>& lhs, const vector<T>& rhs) { return !(lhs == rhs); }
 template <class T>
-bool operator<(const vector<T>& lhs, const vector<T>& rhs) { return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
+bool operator<(const vector<T>& lhs, const vector<T>& rhs) { return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
 template <class T>
 bool operator>(const vector<T>& lhs, const vector<T>& rhs) { return rhs < lhs; }
 template <class T>

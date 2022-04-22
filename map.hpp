@@ -51,7 +51,7 @@ class map {
 		//empty (1)	
 		explicit map (const key_compare& compare = key_compare(), const allocator_type& allocator = allocator_type()) : _tree(compare)
 		{
-			_pair = NULL;
+			_ptr = NULL;
 			_allocator = allocator;
 			_compare = compare;
 		}
@@ -70,7 +70,7 @@ class map {
 		{
 			_allocator = other._allocator;
 			_compare = other._compare;
-			*this = other;
+			// *this = other;
 			insert(other.begin(), other.end());
 		}
 
@@ -95,9 +95,9 @@ class map {
 		{
 			for (iterator it = begin(); it != end(); it++)
 			{
-				_pair = it.node()->key;
-				_allocator.destroy(_pair);
-				_allocator.deallocate(_pair, 1);
+				_ptr = it.node()->key;
+				_allocator.destroy(_ptr);
+				_allocator.deallocate(_ptr, 1);
 			}
 			_tree.delete_tree();
 		}
@@ -108,9 +108,9 @@ class map {
 			iterator it = _tree.found_node(value);
 			if (it != _tree.get_nil())
 				return ft::make_pair(iterator(it), false);
-			_pair = _allocator.allocate(1);
-			_allocator.construct(_pair ,value);
-			it = _tree.RB_insert(_tree.get_root(), _pair);
+			_ptr = _allocator.allocate(1);
+			_allocator.construct(_ptr ,value);
+			it = _tree.RB_insert(_tree.get_root(), _ptr);
 			return ft::make_pair(iterator(it), true);
 		}
 
@@ -120,23 +120,23 @@ class map {
 		// 	position = _tree.found_node(value);
 		// 	if (position != _tree.get_nil())
 		// 		return position;
-		// 	_pair = _allocator.allocate(1);
-		// 	_allocator.construct(_pair ,value);
-		// 	position = _tree.RB_insert(_tree.get_root(), _pair);
+		// 	_ptr = _allocator.allocate(1);
+		// 	_allocator.construct(_ptr ,value);
+		// 	position = _tree.RB_insert(_tree.get_root(), _ptr);
 		// 	return position;
 		// }
 
 		// with hint (2) <- faster?
 		iterator insert (iterator position, const value_type& value)
 		{
-			if (_compare(position->first, _pair->first))
+			if (_compare(position->first, _ptr->first))
 			{
 				iterator it = _tree.found_node(position, value);
 				if (it != _tree.get_nil())
 					return it;
-				_pair = _allocator.allocate(1);
-				_allocator.construct(_pair ,value);
-				position = _tree.RB_insert(position, _pair);
+				_ptr = _allocator.allocate(1);
+				_allocator.construct(_ptr ,value);
+				position = _tree.RB_insert(position, _ptr);
 			}
 			else {
 				ft::pair<ft::map<Key, T, Compare, Allocator>::iterator, bool> its;
@@ -236,7 +236,7 @@ class map {
 		}
 	private:
 		tree_type			_tree;
-		pointer				_pair;
+		pointer				_ptr;
 		allocator_type		_allocator;
 		key_compare			_compare;
 
