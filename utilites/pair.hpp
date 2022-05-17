@@ -45,7 +45,7 @@ template <class U, class V>
 bool operator < (const pair<U, V>& a, const pair<U, V>& b) { return a.first < b.first || (!(a.first < b.first) && a.second < b.second); }
 
 template <class U, class V>
-bool operator > (const pair<U, V>& a, const pair<U, V>& b) { return a < b; }
+bool operator > (const pair<U, V>& a, const pair<U, V>& b) { return a.first > b.first || (!(a.first > b.first) && a.second > b.second); }
 
 template <class U, class V>
 bool operator <= (const pair<U, V>& a, const pair<U, V>& b) { return !(a < b); }

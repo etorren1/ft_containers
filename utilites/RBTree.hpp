@@ -45,6 +45,8 @@ class RBTree
 		typedef _Node<value_type>			Node;
 		typedef Iterator_t<iterator_type>	iterator;
 		typedef Iterator_t<const iterator_type>	const_iterator;
+		typedef RevIterator_t<iterator_type>	reverse_iterator;
+		typedef RevIterator_t<const iterator_type>	const_reverse_iterator;
 
 		RBTree( const Compare& compare ) : _compare(compare) {
 			_root = NIL;
@@ -54,9 +56,6 @@ class RBTree
 			_nil.right = NIL;
 			_nil.key = NULL;
 			_size = 0;
-			// _compare = compare;
-			// std::cout << "Tree construct\n";
-			// std::cout << root << " " << NIL << "\n";
 		}
 
 		~RBTree( void ) {
@@ -68,6 +67,7 @@ class RBTree
 			if (this == &other)
 				return *this;
 			delete_tree();
+			_compare = other._compare;
 			iterator pos = get_root();
 			for (iterator it = other.begin(); it != other.end(); it++)
 				pos = RB_insert(pos, it.node()->key);
@@ -148,14 +148,19 @@ class RBTree
 				_nil.p = _root;
 			}
 			if (near != node)
+			{
+				delete node->key;
 				node->key = near->key;
+			}
+			else
+				delete near->key;
 			if (near->color == BLACK && child != NIL)
 				RB_delete_fixup(child);
 			_size--;
 			delete near;
 		}
 
-		iterator found_node(const iterator_type& key){
+		iterator RB_found(const iterator_type& key){
 			Node *end = _root;
 			// std::cout << "NEW COMPAIR key = " << key.first << "\n";
 			while (end != NIL) {
@@ -179,7 +184,7 @@ class RBTree
 			return (iterator(NIL));
 		}
 
-		iterator found_node(iterator pos, const iterator_type& key){
+		iterator RB_found(iterator pos, const iterator_type& key){
 			Node *end = pos.node();
 			while (end != NIL) {
 				if (_compare(key, *end->key))
@@ -190,6 +195,44 @@ class RBTree
 					return (iterator(end));
 			}
 			return (iterator(NIL));
+		}
+
+		void	RB_swap( RBTree& x )
+		{
+			Node		 *tmp_root = _root;
+			Node		 tmp_nil = _nil;
+			size_type	 tmp_size = _size;
+			pair_compare tmp_compare = _compare;
+
+			// std::cout << (*_root->key).first << " " << (*x._root->key).first << "\n";
+			// std::cout << &_root->key << " " << &(x._root->key) << "\n";
+			// std::cout << &_nil << " " << &x._nil << " NILs old\n";
+			_root = x._root;
+			_root->p = NIL;
+			for (iterator it = x.begin(); it != x.end(); it++)
+			{
+				std::cout << "here1\n";
+				if (it.node()->left->key == NULL)
+					it.node()->left = NIL;
+				if (it.node()->right->key == NULL)
+					it.node()->right = NIL;
+
+			}
+			std::cout << "here1\n";
+			// _nil = x._nil;
+			// _size = x._size;
+			// _compare = x._compare;
+			x._root = tmp_root;
+			// x._nil = tmp_nil;
+			// std::swap(_root, x._root);
+			// std::cout << (*_root->key).first << " " << (*x._root->key).first << "\n";
+			// std::cout << &_root->key << " " << &(x._root->key) << "\n";
+			// std::cout << &_nil << " " << &x._nil << " NILs\n";
+			// x._size = tmp_size;
+			// x._compare = tmp_compare;
+			// std::swap(_nil, x._nil);
+			// std::swap(_size, x._size);
+			// std::swap(_compare, x._compare);
 		}
 
 		Node *max(Node *ptr) {
@@ -228,11 +271,11 @@ class RBTree
 		}
 
 		iterator	end() {
-			return (iterator(NIL));
+			return (iterator((Node*)NIL));
 		}
 
 		const_iterator	end() const {
-			return (const_iterator(NIL));
+			return (const_iterator((Node*)NIL));
 		}
 
 		iterator	begin() {
@@ -241,6 +284,22 @@ class RBTree
 
 		const_iterator	begin() const {
 			return (const_iterator(min(_root)));
+		}
+
+		reverse_iterator	rend() {
+			return (reverse_iterator((Node*)NIL));
+		}
+
+		const_reverse_iterator	rend() const {
+			return (const_reverse_iterator((Node*)NIL));
+		}
+
+		reverse_iterator	rbegin() {
+			return (reverse_iterator(max(_root)));
+		}
+
+		const_reverse_iterator	rbegin() const {
+			return (const_reverse_iterator(max(_root)));
 		}
 
 		size_type size( void ) const {
@@ -278,7 +337,7 @@ class RBTree
 		iterator lower_bound(const value_type& value){
 			iterator last = end();
 			for (iterator first = begin(); first != last; ++first){
-				if(!_compare(*first, value))
+				if(!_compare(*first, *value))
 					return (first);
 			}
 			return (last);
@@ -287,7 +346,7 @@ class RBTree
 		const_iterator lower_bound(const value_type& value) const{
 			const_iterator last = end();
 			for (const_iterator first = begin(); first != last; ++first){
-				if(!_compare(*first, value))
+				if(!_compare(*first, *value))
 					return (first);
 			}
 			return (last);
@@ -296,7 +355,7 @@ class RBTree
 		iterator upper_bound(const value_type& value){
 			iterator last = end();
 			for (iterator first = begin(); first != last; ++first){
-				if(_compare(value, *first))
+				if(_compare(*value, *first))
 					return (first);
 			}
 			return (last);
@@ -305,7 +364,7 @@ class RBTree
 		const_iterator upper_bound(const value_type& value) const{
 			const_iterator last = end();
 			for (const_iterator first = begin(); first != last; ++first){
-				if(_compare(value, *first))
+				if(_compare(*value, *first))
 					return (first);
 			}
 			return (last);
@@ -321,8 +380,10 @@ class RBTree
 
 		// temp showcase
 		void showTree( void ) {
+			std::cout << &_root->key << "\n";
+			std::cout << (*_root->key).first << "\n";
 			if (_root != NIL) {
-				std::cout << GREENC << NIL << "-------TREE--------\n";
+				std::cout << GREENC << "-------TREE--------\n";
 				printKey(_root, "root");
 			}
 			else
@@ -331,7 +392,7 @@ class RBTree
 
 		void showTree(Node *node ) {
 			if (node != NIL) {
-				std::cout << GREENC << NIL << "-------FRAGMENT--------\n";
+				std::cout << GREENC << "-------FRAGMENT--------\n";
 				printKey(node, "node");
 			}
 		}
@@ -342,6 +403,10 @@ class RBTree
 		// temp showcase
 		void printKey(Node *tmp, std::string str) {
 			if (tmp != NIL) {
+				// std::cout << (*tmp->key).first << "\n";
+				// std::cout << tmp->key->second << "\n";
+				// std::cout << NIL << " <-\n";
+				// std::cout << tmp->p << " <-\n";
 				std::string col;
 				if (tmp->color == RED) {
 					col = "RED";
@@ -468,6 +533,19 @@ class RBTree
 			_nil.p = _root;
 		}
 
+		Node* found_node(const value_type& key) {
+			Node *end = _root;
+			while (end != NIL) {
+				if (_compare(*key, *end->key))
+					end = end->left;
+				else if (_compare(*end->key, *key))
+					end = end->right;
+				else
+					return (end);
+			}
+			return (NIL);
+		}
+
 		Node *get_parent(Node *node) {
 			if (node != NIL)
 				return (node->p);
@@ -519,6 +597,7 @@ class RBTree
 			_size--;
 			delete_node(ptr->left);
 			delete_node(ptr->right);
+			delete ptr->key;
 			delete ptr;
 		}
 
@@ -578,6 +657,7 @@ class RBTree
 
 	private:
 		Node   			*_root;
+		// Node			*NIL;
 		Node   			_nil;
 		size_type		_size;
 		pair_compare	_compare;
