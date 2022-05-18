@@ -208,9 +208,6 @@ class vector
 			{
 				size_type new_cap =	_capacity * 2 >= _size + count ? _capacity * 2 : _size + count;
 				pointer tmp = _allocator.allocate(new_cap);
-				// std::uninitialized_copy(begin(), pos, iterator(tmp));
-				// std::uninitialized_copy(first, last, iterator(tmp + index));
-				// std::uninitialized_copy(pos, end(), iterator(tmp + index + count));
 				try {
 					for (size_type i = 0; i < index; i++) {
 						_allocator.construct(tmp + i, _container[i]);
@@ -230,8 +227,6 @@ class vector
 					_allocator.deallocate(tmp, new_cap);
 					throw;
 				}
-				// for (size_type i = 0; i < _size; i++)
-				// 	_allocator.destroy(_container + i);
 				_allocator.deallocate(_container, _capacity);
 				_size += count;
 				_capacity = new_cap;
@@ -247,56 +242,13 @@ class vector
 			}
 		}
 
-		// template<typename InputIt>
-		// typename ft::enable_if<!ft::is_integral<InputIt>::value, void>::type
-		// insert( iterator pos, InputIt first, InputIt last )
-		// {
-		// 	size_type count = last - first;
-		// 	size_type index = pos - begin();
-		// 	std::cout << "count = " << count << " index = " << index << "\n";
-		// 	if (count == 0 || index > _size)
-		// 		return ;
-		// 	if (_capacity < _size + count && _capacity * 2 > _size + count)
-		// 		reserve(_capacity * 2);
-		// 	else if (_capacity)
-		// 		reserve(_size + count);
-		// 	else if (!_capacity)
-		// 		reserve(count);
-		// 	_size += count;
-		// 	size_type idx = _size;
-		// 	for ( ; idx != index + count; idx--)
-		// 		_allocator.construct(_container + idx, _container[idx - count]);
-		// 	// std::cout << _container << "\n";
-		// 	// std::cout << _container + 1 << "\n";
-		// 	// std::cout << _container + 2 << "\n";
-		//  	for ( ; count > 0; count--)
-		// 	{
-		// 		idx--;
-		// 		last--;
-		// 		// std::cout << "last[" << count << "]= " << *last << " cont = " << _container + idx << "\n";
-		// 			// _container[idx] = *last;
-		// 			_allocator.construct(_container + idx, *last);
-		// 		// std::cout << "asda\n";
-		// 	}
-		// }
-
 		iterator erase (iterator pos)
 		{
-			// //version 1
-			// size_type index = pos - begin();
-			// _allocator.destroy(_container + index);
-			// for (iterator it = pos, prev = it++; prev != end(); it++, prev++)
-			// 	*prev = *it;
-			// _size--;
-			// return pos;
-
-			// version 2
 			size_type index = pos - begin();
 			if (index < 0 || index >= _size)
 				return pos;
 			for (size_type idx = index ; idx < _size; idx++)
 				_container[idx] = _container[idx + 1];
-				// _allocator.construct(_container + idx, _container[idx + 1]); // construct take 2 times more time
 			_size--;
 			_allocator.destroy(_container + _size);
 			return iterator(_container + index);

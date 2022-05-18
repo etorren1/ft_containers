@@ -15,7 +15,6 @@ class Iterator_v
 {
     template<typename V, class Allocator> friend class vector;
     public:
-        typedef T _base;
         typedef typename ft::iterator_traits<T*>::difference_type 	difference_type;
         typedef typename ft::iterator_traits<T*>::value_type		value_type;
         typedef typename ft::iterator_traits<T*>::pointer			pointer;
@@ -29,7 +28,6 @@ class Iterator_v
         Iterator_v( const Iterator_v<value_type>& It ) { _ptr = It.getPtr(); }
         virtual ~Iterator_v() {}
 
-        // Iterator_v<value_type>& operator=( const Iterator_v<value_type>& It ) { _ptr = It.getPtr(); return *this; }
         Iterator_v<T>& operator=( pointer ptr ) { _ptr = ptr; return *this; }
         Iterator_v<T>& operator+=( const difference_type& move) { _ptr += move; return *this; }
         Iterator_v<T>& operator-=( const difference_type& move) { _ptr -= move; return *this; }
@@ -95,7 +93,6 @@ class RevIterator_v
         RevIterator_v( const RevIterator_v<value_type>& It ) { _ptr = It.getPtr(); }
         virtual ~RevIterator_v() {}
 
-        // Iterator_v<value_type>& operator=( const RevIterator_v<value_type>& It ) { _ptr = It.getPtr(); return *this; }
         RevIterator_v<value_type>& operator=( pointer ptr ) { _ptr = ptr; return *this; }
         RevIterator_v<value_type>& operator+=( const difference_type& move) { _ptr -= move; return *this; }
         RevIterator_v<value_type>& operator-=( const difference_type& move) { _ptr += move; return *this; }

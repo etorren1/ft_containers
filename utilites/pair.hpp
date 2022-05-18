@@ -36,22 +36,22 @@ pair<U, V> make_pair(U a, V b)
 }
 
 template <class U, class V>
-bool operator == (const pair<U, V>& a, const pair<U, V>& b) { return a.first == b.first && a.second == b.second; }
+bool operator == (const pair<U, V>& lhs, const pair<U, V>& rhs) { return lhs.first == rhs.first && lhs.second == rhs.second; }
 
 template <class U, class V>
-bool operator != (const pair<U, V>& a, const pair<U, V>& b) { return !(a == b); }
+bool operator != (const pair<U, V>& lhs, const pair<U, V>& rhs) { return !(lhs == rhs); }
 
 template <class U, class V>
-bool operator < (const pair<U, V>& a, const pair<U, V>& b) { return a.first < b.first || (!(a.first < b.first) && a.second < b.second); }
+bool operator < (const pair<U, V>& lhs, const pair<U, V>& rhs) { return ((lhs.second < rhs.second && !(rhs.first < lhs.first)) || lhs.first < rhs.first); }
+                                                                
+template <class U, class V>
+bool operator > (const pair<U, V>& lhs, const pair<U, V>& rhs) { return (rhs < lhs); }
 
 template <class U, class V>
-bool operator > (const pair<U, V>& a, const pair<U, V>& b) { return a.first > b.first || (!(a.first > b.first) && a.second > b.second); }
+bool operator <= (const pair<U, V>& lhs, const pair<U, V>& rhs) { return (!(rhs < lhs)); }
 
 template <class U, class V>
-bool operator <= (const pair<U, V>& a, const pair<U, V>& b) { return !(a < b); }
-
-template <class U, class V>
-bool operator >= (const pair<U, V>& a, const pair<U, V>& b) { return !(a < b); }
+bool operator >= (const pair<U, V>& lhs, const pair<U, V>& rhs) { return (!(lhs < rhs)); }
 
 }
 

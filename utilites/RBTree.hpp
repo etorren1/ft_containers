@@ -13,7 +13,7 @@ namespace ft {
 #define LEFT	4
 #define RIGHT	5
 #define NCHILD	6
-#define NIL 	&(this->_nil)
+#define NIL 	(this->_nil_ptr)
 
 
 #define BLACKC  "\033[47;30m"
@@ -49,12 +49,13 @@ class RBTree
 		typedef RevIterator_t<const iterator_type>	const_reverse_iterator;
 
 		RBTree( const Compare& compare ) : _compare(compare) {
+			__nil.color = BLACK;
+			__nil.p = _root;
+			__nil.left = NIL;
+			__nil.right = NIL;
+			__nil.key = NULL;
+			_nil_ptr = &__nil;
 			_root = NIL;
-			_nil.color = BLACK;
-			_nil.p = _root;
-			_nil.left = NIL;
-			_nil.right = NIL;
-			_nil.key = NULL;
 			_size = 0;
 		}
 
@@ -74,26 +75,26 @@ class RBTree
 			return *this;
 		}
 
-		void	all_tree() const /// iterate from begin to end
-		{
-			Node* node = begin().node();
-			while (node != NIL)
-			{
-				if (node != NIL)
-					std::cout << "show tree: " << node->key->first << "," << node->key->second << "\n";
-				if (node->right != NIL) {
-					node = min(node->right);
-				}
-				else {
-					Node* y = node->p;
-					while (y != NIL && node == y->right) {
-						node = y;
-						y = y->p;
-					}
-					node = y;
-				}
-			}
-		}
+		// void	all_tree() const /// iterate from begin to end
+		// {
+		// 	Node* node = begin().node();
+		// 	while (node != NIL)
+		// 	{
+		// 		if (node != NIL)
+		// 			std::cout << "show tree: " << node->key->first << "," << node->key->second << "\n";
+		// 		if (node->right != NIL) {
+		// 			node = min(node->right);
+		// 		}
+		// 		else {
+		// 			Node* y = node->p;
+		// 			while (y != NIL && node == y->right) {
+		// 				node = y;
+		// 				y = y->p;
+		// 			}
+		// 			node = y;
+		// 		}
+		// 	}
+		// }
 
 		iterator RB_insert(iterator pos, value_type key) {
 			Node *prev = NIL;
@@ -111,7 +112,7 @@ class RBTree
 			node->p = prev;
 			if (prev == NIL) {
 				_root = node;
-				_nil.p = _root;
+				__nil.p = _root;
 			}
 			else if (_compare(*node->key, *prev->key))
 				prev->left = node;
@@ -145,7 +146,7 @@ class RBTree
 			}
 			else {
 				_root = child;
-				_nil.p = _root;
+				__nil.p = _root;
 			}
 			if (near != node)
 			{
@@ -200,39 +201,18 @@ class RBTree
 		void	RB_swap( RBTree& x )
 		{
 			Node		 *tmp_root = _root;
-			Node		 tmp_nil = _nil;
+			Node		 *tmp_nil_ptr = _nil_ptr;
 			size_type	 tmp_size = _size;
 			pair_compare tmp_compare = _compare;
 
-			// std::cout << (*_root->key).first << " " << (*x._root->key).first << "\n";
-			// std::cout << &_root->key << " " << &(x._root->key) << "\n";
-			// std::cout << &_nil << " " << &x._nil << " NILs old\n";
 			_root = x._root;
-			_root->p = NIL;
-			for (iterator it = x.begin(); it != x.end(); it++)
-			{
-				std::cout << "here1\n";
-				if (it.node()->left->key == NULL)
-					it.node()->left = NIL;
-				if (it.node()->right->key == NULL)
-					it.node()->right = NIL;
-
-			}
-			std::cout << "here1\n";
-			// _nil = x._nil;
-			// _size = x._size;
-			// _compare = x._compare;
 			x._root = tmp_root;
-			// x._nil = tmp_nil;
-			// std::swap(_root, x._root);
-			// std::cout << (*_root->key).first << " " << (*x._root->key).first << "\n";
-			// std::cout << &_root->key << " " << &(x._root->key) << "\n";
-			// std::cout << &_nil << " " << &x._nil << " NILs\n";
-			// x._size = tmp_size;
-			// x._compare = tmp_compare;
-			// std::swap(_nil, x._nil);
-			// std::swap(_size, x._size);
-			// std::swap(_compare, x._compare);
+			_nil_ptr = x._nil_ptr;
+			x._nil_ptr = tmp_nil_ptr;
+			_size = x._size;
+			x._size = tmp_size;
+			_compare = x._compare;
+			x._compare = tmp_compare;
 		}
 
 		Node *max(Node *ptr) {
@@ -331,7 +311,7 @@ class RBTree
 		{
 			delete_node(_root);
 			_root = NIL;
-			_nil.p = _root;
+			__nil.p = _root;
 		}
 
 		iterator lower_bound(const value_type& value){
@@ -403,10 +383,10 @@ class RBTree
 		// temp showcase
 		void printKey(Node *tmp, std::string str) {
 			if (tmp != NIL) {
-				// std::cout << (*tmp->key).first << "\n";
-				// std::cout << tmp->key->second << "\n";
+				// std::cout << tmp << " <-\n";
 				// std::cout << NIL << " <-\n";
 				// std::cout << tmp->p << " <-\n";
+				// std::cout << (*tmp->key).first << "\n";
 				std::string col;
 				if (tmp->color == RED) {
 					col = "RED";
@@ -432,7 +412,7 @@ class RBTree
 			}
 			while (get_parent(node)->color == RED) {
 				_root = found_root(node);
-				_nil.p = _root;
+				__nil.p = _root;
 				if (who_i_am(get_parent(node)) == LEFT) {
 					if (get_uncle(node)->color == RED) {
 						get_parent(node)->color = BLACK;
@@ -470,7 +450,7 @@ class RBTree
 			}
 			_root = found_root(node);
 			_root->color = BLACK;
-			_nil.p = _root;
+			__nil.p = _root;
 		}
 
 		void RB_delete_fixup(Node *node) {
@@ -530,7 +510,7 @@ class RBTree
 			}
 			node->color = BLACK;
 			_root = found_root(node);
-			_nil.p = _root;
+			__nil.p = _root;
 		}
 
 		Node* found_node(const value_type& key) {
@@ -657,8 +637,8 @@ class RBTree
 
 	private:
 		Node   			*_root;
-		// Node			*NIL;
-		Node   			_nil;
+		Node			*_nil_ptr;
+		Node   			__nil;
 		size_type		_size;
 		pair_compare	_compare;
 };

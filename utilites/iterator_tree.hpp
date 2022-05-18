@@ -12,25 +12,28 @@ struct _Node;
 template<typename T>
 class Iterator_t {
 	public:
-		typedef typename ft::iterator_traits<T*>::value_type 		value_type;
-		typedef typename ft::iterator_traits<T*>::reference 		reference;
-		typedef typename ft::iterator_traits<T*>::pointer			pointer;
-		typedef typename ft::iterator_traits<T*>::difference_type	difference_type;
-		// typedef ft::iterator_traits<T*>::iterator_category iterator_category;
-		typedef std::bidirectional_iterator_tag iterator_category;
-		typedef _Node<pointer>											Node;
+		typedef T													value_type;
+        typedef typename ft::iterator_traits<T*>::pointer			pointer;
+        typedef typename ft::iterator_traits<T*>::reference			reference;
+		typedef typename ft::iterator_traits<T*>::difference_type 	difference_type;
+		typedef std::bidirectional_iterator_tag 					iterator_category;
+		typedef _Node<pointer>										Node;
 
 	private:
 		Node* _node;
 
 
 		Node* min(Node* node) const {
+			if (!node->left)
+				return node;
 			while(node->left->key != NULL)
 				node = node->left;
 			return node;
 		}
 
 		Node* max(Node* node) const {
+			if (!node->right)
+				return node;
 			while (node->right->key != NULL)
 				node = node->right;
 			return node;
